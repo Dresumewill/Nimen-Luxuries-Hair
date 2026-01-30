@@ -678,6 +678,100 @@ app.get('/sitemap.xml', (c) => {
 </urlset>`)
 })
 
+// Stripe Configuration
+// IMPORTANT: Replace these with your actual Stripe keys
+// For testing, use test keys (pk_test_... and sk_test_...)
+// For production, use live keys (pk_live_... and sk_live_...)
+const STRIPE_PUBLISHABLE_KEY = 'pk_test_51ABC123XYZ' // Replace with your publishable key
+const STRIPE_SECRET_KEY = 'sk_test_51ABC123XYZ' // Replace with your secret key - store securely!
+
+// Stripe API endpoint
+const STRIPE_API = 'https://api.stripe.com/v1'
+
+// Helper function to make Stripe API calls
+async function stripeRequest(endpoint: string, method: string, body?: Record<string, string>) {
+  const headers: Record<string, string> = {
+    'Authorization': `Bearer ${STRIPE_SECRET_KEY}`,
+    'Content-Type': 'application/x-www-form-urlencoded',
+  }
+  
+  const options: RequestInit = {
+    method,
+    headers,
+  }
+  
+  if (body) {
+    options.body = new URLSearchParams(body).toString()
+  }
+  
+  const response = await fetch(`${STRIPE_API}${endpoint}`, options)
+  return response.json()
+}
+
+// Create Payment Intent
+app.post('/api/create-payment-intent', async (c) => {
+  try {
+    const { amount, currency = 'usd', customer_email, metadata } = await c.req.json()
+    
+    if (!amount || amount < 50) { // Stripe minimum is $0.50
+      return c.json({ error: 'Invalid amount' }, 400)
+    }
+    
+    const paymentIntent = await stripeRequest('/payment_intents', 'POST', {
+      amount: String(Math.round(amount)), // Amount in cents
+      currency,
+      'automatic_payment_methods[enabled]': 'true',
+      'metadata[customer_email]': customer_email || '',
+      'metadata[order_items]': metadata?.items || '',
+    })
+    
+    if (paymentIntent.error) {
+      return c.json({ error: paymentIntent.error.message }, 400)
+    }
+    
+    return c.json({
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+    })
+  } catch (error) {
+    console.error('Stripe error:', error)
+    return c.json({ error: 'Payment initialization failed' }, 500)
+  }
+})
+
+// Stripe Webhook (for production use)
+app.post('/api/webhook', async (c) => {
+  try {
+    const payload = await c.req.text()
+    // In production, verify webhook signature using STRIPE_WEBHOOK_SECRET
+    const event = JSON.parse(payload)
+    
+    switch (event.type) {
+      case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object
+        console.log('Payment succeeded:', paymentIntent.id)
+        // Here you would:
+        // 1. Save order to database
+        // 2. Send confirmation email
+        // 3. Update inventory
+        break
+      case 'payment_intent.payment_failed':
+        console.log('Payment failed:', event.data.object.id)
+        break
+    }
+    
+    return c.json({ received: true })
+  } catch (error) {
+    console.error('Webhook error:', error)
+    return c.json({ error: 'Webhook failed' }, 400)
+  }
+})
+
+// Get Stripe publishable key (for frontend)
+app.get('/api/stripe-config', (c) => {
+  return c.json({ publishableKey: STRIPE_PUBLISHABLE_KEY })
+})
+
 // API Routes
 app.get('/api/products', (c) => {
   const category = c.req.query('category')
@@ -1800,56 +1894,124 @@ app.get('/checkout', (c) => {
   const content = `
     <section class="py-16 px-4">
       <div class="max-w-6xl mx-auto">
-        <h1 class="font-serif text-4xl text-gradient mb-8">Checkout</h1>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <h1 class="font-serif text-4xl text-gradient mb-8">Secure Checkout</h1>
+        
+        <!-- Loading State -->
+        <div id="loading-state" class="text-center py-20">
+          <div class="animate-spin w-12 h-12 border-4 border-champagne border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p class="text-cream/70">Loading secure checkout...</p>
+        </div>
+        
+        <!-- Checkout Form -->
+        <div id="checkout-container" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
             <form id="checkout-form" class="space-y-8">
+              <!-- Contact Information -->
               <div>
                 <h2 class="font-serif text-xl text-champagne mb-4">Contact Information</h2>
                 <div class="space-y-4">
-                  <input type="email" placeholder="Email address" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                  <input type="tel" placeholder="Phone number" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  <div>
+                    <label for="email" class="block text-cream/70 text-sm mb-2">Email Address *</label>
+                    <input type="email" id="email" name="email" required autocomplete="email" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  </div>
+                  <div>
+                    <label for="phone" class="block text-cream/70 text-sm mb-2">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required autocomplete="tel" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  </div>
                 </div>
               </div>
+              
+              <!-- Shipping Address -->
               <div>
                 <h2 class="font-serif text-xl text-champagne mb-4">Shipping Address</h2>
                 <div class="space-y-4">
                   <div class="grid grid-cols-2 gap-4">
-                    <input type="text" placeholder="First name" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                    <input type="text" placeholder="Last name" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                  </div>
-                  <input type="text" placeholder="Address" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                  <div class="grid grid-cols-3 gap-4">
-                    <input type="text" placeholder="City" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                    <input type="text" placeholder="State" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                    <input type="text" placeholder="ZIP code" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                  </div>
-                  <select required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream">
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="NG">Nigeria</option>
-                    <option value="GH">Ghana</option>
-                  </select>
-                </div>
-              </div>
-              <div>
-                <h2 class="font-serif text-xl text-champagne mb-4">Payment</h2>
-                <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded p-6">
-                  <div class="flex items-center gap-2 mb-4"><i class="fab fa-cc-stripe text-2xl text-champagne"></i><span class="text-cream">Secure payment via Stripe</span></div>
-                  <div class="space-y-4">
-                    <input type="text" placeholder="Card number" required class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                    <div class="grid grid-cols-2 gap-4">
-                      <input type="text" placeholder="MM / YY" required class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
-                      <input type="text" placeholder="CVC" required class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    <div>
+                      <label for="firstName" class="block text-cream/70 text-sm mb-2">First Name *</label>
+                      <input type="text" id="firstName" name="firstName" required autocomplete="given-name" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    </div>
+                    <div>
+                      <label for="lastName" class="block text-cream/70 text-sm mb-2">Last Name *</label>
+                      <input type="text" id="lastName" name="lastName" required autocomplete="family-name" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
                     </div>
                   </div>
-                  <div class="flex items-center gap-4 mt-4 text-cream/40 text-xs"><i class="fas fa-lock"></i><span>Your payment information is encrypted and secure</span></div>
+                  <div>
+                    <label for="address" class="block text-cream/70 text-sm mb-2">Street Address *</label>
+                    <input type="text" id="address" name="address" required autocomplete="street-address" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  </div>
+                  <div>
+                    <label for="address2" class="block text-cream/70 text-sm mb-2">Apartment, Suite, etc. (optional)</label>
+                    <input type="text" id="address2" name="address2" autocomplete="address-line2" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  </div>
+                  <div class="grid grid-cols-3 gap-4">
+                    <div>
+                      <label for="city" class="block text-cream/70 text-sm mb-2">City *</label>
+                      <input type="text" id="city" name="city" required autocomplete="address-level2" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    </div>
+                    <div>
+                      <label for="state" class="block text-cream/70 text-sm mb-2">State *</label>
+                      <input type="text" id="state" name="state" required autocomplete="address-level1" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    </div>
+                    <div>
+                      <label for="zip" class="block text-cream/70 text-sm mb-2">ZIP Code *</label>
+                      <input type="text" id="zip" name="zip" required autocomplete="postal-code" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    </div>
+                  </div>
+                  <div>
+                    <label for="country" class="block text-cream/70 text-sm mb-2">Country *</label>
+                    <select id="country" name="country" required autocomplete="country" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream">
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                      <option value="GB">United Kingdom</option>
+                      <option value="NG">Nigeria</option>
+                      <option value="GH">Ghana</option>
+                      <option value="AU">Australia</option>
+                      <option value="DE">Germany</option>
+                      <option value="FR">France</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <button type="submit" class="btn-primary w-full py-4 rounded text-sm font-medium tracking-wider">COMPLETE ORDER</button>
+              
+              <!-- Payment Section with Stripe Elements -->
+              <div>
+                <h2 class="font-serif text-xl text-champagne mb-4">Payment Details</h2>
+                <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded p-6">
+                  <div class="flex items-center gap-3 mb-6">
+                    <span class="fab fa-cc-stripe text-3xl text-champagne" aria-hidden="true"></span>
+                    <span class="fab fa-cc-visa text-2xl text-cream/60" aria-hidden="true"></span>
+                    <span class="fab fa-cc-mastercard text-2xl text-cream/60" aria-hidden="true"></span>
+                    <span class="fab fa-cc-amex text-2xl text-cream/60" aria-hidden="true"></span>
+                    <span class="text-cream ml-auto text-sm">Secure payment</span>
+                  </div>
+                  
+                  <!-- Stripe Card Element Container -->
+                  <div id="card-element" class="bg-charcoal border border-pink/40 rounded px-4 py-4 min-h-[50px]">
+                    <!-- Stripe Elements will be inserted here -->
+                  </div>
+                  
+                  <!-- Card Errors -->
+                  <div id="card-errors" class="text-red-400 text-sm mt-3 hidden" role="alert"></div>
+                  
+                  <div class="flex items-center gap-3 mt-4 text-cream/50 text-xs">
+                    <span class="fas fa-lock" aria-hidden="true"></span>
+                    <span>Your payment is secured with 256-bit SSL encryption</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Submit Button -->
+              <button type="submit" id="submit-button" class="btn-primary w-full py-4 rounded text-sm font-medium tracking-wider flex items-center justify-center gap-3">
+                <span id="button-text">COMPLETE ORDER</span>
+                <span id="spinner" class="hidden animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span>
+              </button>
+              
+              <!-- Error Message -->
+              <div id="payment-message" class="hidden text-center p-4 rounded bg-red-500/20 border border-red-500/50 text-red-300"></div>
             </form>
           </div>
+          
+          <!-- Order Summary -->
           <div>
             <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 p-8 rounded-lg sticky top-28">
               <h2 class="font-serif text-xl text-champagne mb-6">Order Summary</h2>
@@ -1857,7 +2019,20 @@ app.get('/checkout', (c) => {
               <div class="border-t border-champagne/20 pt-6 space-y-4">
                 <div class="flex justify-between text-cream/70"><span>Subtotal</span><span id="checkout-subtotal">$0.00</span></div>
                 <div class="flex justify-between text-cream/70"><span>Shipping</span><span id="checkout-shipping">Calculated</span></div>
-                <div class="flex justify-between text-cream font-medium pt-4 border-t border-champagne/20"><span>Total</span><span id="checkout-total" class="font-serif text-2xl text-champagne">$0.00</span></div>
+                <div class="flex justify-between text-cream font-medium pt-4 border-t border-champagne/20">
+                  <span>Total</span>
+                  <span id="checkout-total" class="font-serif text-2xl text-champagne">$0.00</span>
+                </div>
+              </div>
+              <div class="mt-6 pt-6 border-t border-champagne/20">
+                <div class="flex items-center gap-2 text-cream/60 text-sm mb-2">
+                  <span class="fas fa-truck" aria-hidden="true"></span>
+                  <span>Free shipping on orders over $200</span>
+                </div>
+                <div class="flex items-center gap-2 text-cream/60 text-sm">
+                  <span class="fas fa-undo" aria-hidden="true"></span>
+                  <span>30-day return policy</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1867,38 +2042,254 @@ app.get('/checkout', (c) => {
   `
   
   const scripts = `
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
+      let stripe;
+      let elements;
+      let cardElement;
+      let clientSecret;
+      let orderTotal = 0;
+      
+      // Initialize Stripe
+      async function initStripe() {
+        try {
+          // Get Stripe publishable key from server
+          const configResponse = await fetch('/api/stripe-config');
+          const { publishableKey } = await configResponse.json();
+          
+          // Initialize Stripe
+          stripe = Stripe(publishableKey);
+          
+          // Create Stripe Elements with custom styling
+          elements = stripe.elements({
+            appearance: {
+              theme: 'night',
+              variables: {
+                colorPrimary: '#ff85b3',
+                colorBackground: '#2d1f3d',
+                colorText: '#fff5fa',
+                colorDanger: '#ff6b6b',
+                fontFamily: 'Montserrat, sans-serif',
+                spacingUnit: '4px',
+                borderRadius: '8px',
+              },
+              rules: {
+                '.Input': {
+                  backgroundColor: '#2d1f3d',
+                  border: '1px solid rgba(255, 133, 179, 0.4)',
+                },
+                '.Input:focus': {
+                  border: '1px solid #ff85b3',
+                  boxShadow: '0 0 10px rgba(255, 133, 179, 0.3)',
+                },
+                '.Label': {
+                  color: '#fff5fa',
+                },
+              },
+            },
+          });
+          
+          // Create Card Element
+          cardElement = elements.create('card', {
+            style: {
+              base: {
+                color: '#fff5fa',
+                fontFamily: 'Montserrat, sans-serif',
+                fontSize: '16px',
+                '::placeholder': {
+                  color: 'rgba(255, 245, 250, 0.4)',
+                },
+              },
+              invalid: {
+                color: '#ff6b6b',
+                iconColor: '#ff6b6b',
+              },
+            },
+          });
+          
+          // Mount Card Element
+          cardElement.mount('#card-element');
+          
+          // Handle card errors
+          cardElement.on('change', function(event) {
+            const displayError = document.getElementById('card-errors');
+            if (event.error) {
+              displayError.textContent = event.error.message;
+              displayError.classList.remove('hidden');
+            } else {
+              displayError.textContent = '';
+              displayError.classList.add('hidden');
+            }
+          });
+          
+          // Render checkout and show form
+          renderCheckout();
+          document.getElementById('loading-state').classList.add('hidden');
+          document.getElementById('checkout-container').classList.remove('hidden');
+          
+        } catch (error) {
+          console.error('Failed to initialize Stripe:', error);
+          document.getElementById('loading-state').innerHTML = '<p class="text-red-400">Failed to load checkout. Please refresh the page.</p>';
+        }
+      }
+      
       function renderCheckout() {
         const cart = JSON.parse(localStorage.getItem('nimen-cart') || '[]');
-        if (cart.length === 0) { window.location.href = '/cart'; return; }
+        if (cart.length === 0) { 
+          window.location.href = '/cart'; 
+          return; 
+        }
         
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const shipping = subtotal >= 200 ? 0 : 15;
-        const total = subtotal + shipping;
+        orderTotal = subtotal + shipping;
         
         let itemsHTML = '';
         cart.forEach(item => {
-          itemsHTML += '<div class="flex gap-4"><div class="relative"><img src="' + item.image + '" alt="' + item.name + '" class="w-16 h-20 object-cover rounded"><span class="absolute -top-2 -right-2 bg-champagne text-charcoal text-xs w-5 h-5 rounded-full flex items-center justify-center">' + item.quantity + '</span></div><div class="flex-1"><h4 class="text-cream text-sm">' + item.name + '</h4><p class="text-cream/60 text-xs">' + (item.variant || '') + '</p></div><span class="text-champagne">$' + (item.price * item.quantity).toFixed(2) + '</span></div>';
+          itemsHTML += '<div class="flex gap-4"><div class="relative"><img src="' + item.image + '" alt="' + item.name + '" class="w-16 h-20 object-cover rounded" loading="lazy" width="64" height="80"><span class="absolute -top-2 -right-2 bg-champagne text-charcoal text-xs w-5 h-5 rounded-full flex items-center justify-center">' + item.quantity + '</span></div><div class="flex-1"><h4 class="text-cream text-sm">' + item.name + '</h4><p class="text-cream/60 text-xs">' + (item.variant || '') + '</p></div><span class="text-champagne">$' + (item.price * item.quantity).toFixed(2) + '</span></div>';
         });
         
         document.getElementById('checkout-items').innerHTML = itemsHTML;
         document.getElementById('checkout-subtotal').textContent = '$' + subtotal.toFixed(2);
         document.getElementById('checkout-shipping').textContent = shipping === 0 ? 'FREE' : '$' + shipping.toFixed(2);
-        document.getElementById('checkout-total').textContent = '$' + total.toFixed(2);
+        document.getElementById('checkout-total').textContent = '$' + orderTotal.toFixed(2);
       }
       
-      document.getElementById('checkout-form').addEventListener('submit', function(e) {
+      // Handle form submission
+      document.getElementById('checkout-form').addEventListener('submit', async function(e) {
         e.preventDefault();
-        alert('Thank you for your order! You will receive a confirmation email shortly.');
-        localStorage.removeItem('nimen-cart');
-        window.location.href = '/';
+        
+        const submitButton = document.getElementById('submit-button');
+        const buttonText = document.getElementById('button-text');
+        const spinner = document.getElementById('spinner');
+        const messageDiv = document.getElementById('payment-message');
+        
+        // Disable button and show spinner
+        submitButton.disabled = true;
+        buttonText.textContent = 'PROCESSING...';
+        spinner.classList.remove('hidden');
+        messageDiv.classList.add('hidden');
+        
+        try {
+          // Get form data
+          const email = document.getElementById('email').value;
+          const cart = JSON.parse(localStorage.getItem('nimen-cart') || '[]');
+          const itemsSummary = cart.map(i => i.name + ' x' + i.quantity).join(', ');
+          
+          // Create Payment Intent
+          const response = await fetch('/api/create-payment-intent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: Math.round(orderTotal * 100), // Convert to cents
+              currency: 'usd',
+              customer_email: email,
+              metadata: { items: itemsSummary }
+            })
+          });
+          
+          const { clientSecret: secret, error: intentError } = await response.json();
+          
+          if (intentError) {
+            throw new Error(intentError);
+          }
+          
+          // Confirm payment with Stripe
+          const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(secret, {
+            payment_method: {
+              card: cardElement,
+              billing_details: {
+                name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                email: email,
+                phone: document.getElementById('phone').value,
+                address: {
+                  line1: document.getElementById('address').value,
+                  line2: document.getElementById('address2').value || '',
+                  city: document.getElementById('city').value,
+                  state: document.getElementById('state').value,
+                  postal_code: document.getElementById('zip').value,
+                  country: document.getElementById('country').value,
+                }
+              }
+            }
+          });
+          
+          if (stripeError) {
+            throw new Error(stripeError.message);
+          }
+          
+          if (paymentIntent.status === 'succeeded') {
+            // Payment successful!
+            localStorage.removeItem('nimen-cart');
+            window.location.href = '/order-confirmation?payment_intent=' + paymentIntent.id;
+          }
+          
+        } catch (error) {
+          console.error('Payment error:', error);
+          messageDiv.textContent = error.message || 'Payment failed. Please try again.';
+          messageDiv.classList.remove('hidden');
+          submitButton.disabled = false;
+          buttonText.textContent = 'COMPLETE ORDER';
+          spinner.classList.add('hidden');
+        }
       });
       
-      renderCheckout();
+      // Initialize on page load
+      initStripe();
     </script>
   `
   
   return c.html(baseLayout('Checkout', content, scripts))
+})
+
+// Order Confirmation Page
+app.get('/order-confirmation', (c) => {
+  const paymentIntentId = c.req.query('payment_intent') || ''
+  
+  const content = `
+    <section class="py-20 px-4">
+      <div class="max-w-2xl mx-auto text-center">
+        <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-8">
+          <span class="fas fa-check text-4xl text-green-400" aria-hidden="true"></span>
+        </div>
+        <h1 class="font-serif text-4xl md:text-5xl text-gradient mb-6">Thank You!</h1>
+        <p class="text-cream/70 text-lg mb-8">Your order has been successfully placed.</p>
+        
+        <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 p-8 rounded-lg mb-8 text-left">
+          <h2 class="font-serif text-xl text-champagne mb-4">Order Details</h2>
+          <div class="space-y-3 text-cream/70">
+            <div class="flex justify-between">
+              <span>Order Reference:</span>
+              <span class="text-cream font-mono text-sm">${paymentIntentId ? paymentIntentId.substring(0, 20) + '...' : 'Processing...'}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Status:</span>
+              <span class="text-green-400">Payment Confirmed</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4 mb-8">
+          <div class="flex items-center gap-3 justify-center text-cream/70">
+            <span class="fas fa-envelope" aria-hidden="true"></span>
+            <span>A confirmation email will be sent shortly</span>
+          </div>
+          <div class="flex items-center gap-3 justify-center text-cream/70">
+            <span class="fas fa-truck" aria-hidden="true"></span>
+            <span>You'll receive tracking info when your order ships</span>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/shop" class="btn-primary px-8 py-4 rounded text-sm font-medium tracking-wider">CONTINUE SHOPPING</a>
+          <a href="/contact" class="btn-secondary px-8 py-4 rounded text-sm font-medium tracking-wider">CONTACT SUPPORT</a>
+        </div>
+      </div>
+    </section>
+  `
+  
+  return c.html(baseLayout('Order Confirmed', content))
 })
 
 export default app
