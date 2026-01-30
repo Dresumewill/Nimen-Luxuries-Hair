@@ -744,8 +744,9 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
     <nav class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-dark/95 via-charcoal/95 to-pink-dark/95 backdrop-blur-sm border-b border-pink/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <a href="/" class="flex items-center space-x-3">
-                    <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries" class="h-14 w-auto">
+                <a href="/" class="flex items-center space-x-2">
+                    <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries Icon" class="h-12 w-auto">
+                    <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="h-10 w-auto hidden sm:block">
                 </a>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="/" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">HOME</a>
@@ -799,7 +800,10 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="md:col-span-1">
-                    <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries" class="h-20 w-auto mb-6">
+                    <div class="flex items-center space-x-3 mb-6">
+                      <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries Icon" class="h-16 w-auto">
+                      <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="h-12 w-auto">
+                    </div>
                     <p class="text-cream/60 text-sm leading-relaxed">From roots to tips, perfection never slips.<br>Premium hair that shows you care.</p>
                     <div class="flex space-x-4 mt-6">
                         <a href="#" class="text-cream/60 hover:text-champagne transition-colors"><i class="fab fa-instagram text-xl"></i></a>
@@ -1337,7 +1341,10 @@ app.get('/about', (c) => {
     <section class="py-20 px-4">
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div><img src="/static/images/logo-transparent.png" alt="Nimen Luxuries" class="w-full max-w-md mx-auto"></div>
+          <div class="flex flex-col items-center space-y-4">
+            <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries Icon" class="w-32 h-auto">
+            <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="w-full max-w-sm mx-auto">
+          </div>
           <div>
             <h2 class="font-serif text-3xl md:text-4xl text-champagne mb-6">The Beginning</h2>
             <p class="text-cream/70 leading-relaxed mb-6">Nimen Luxuries was born from a simple belief: every woman deserves access to premium quality hair that makes her feel confident, beautiful, and unstoppable.</p>
