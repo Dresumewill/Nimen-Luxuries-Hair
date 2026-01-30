@@ -654,7 +654,7 @@ app.get('/api/products/:id', (c) => {
 // Helper function to generate product card HTML
 const productCard = (p: Product) => `
   <a href="/product/${p.id}" class="product-card group">
-    <div class="relative aspect-[3/4] overflow-hidden rounded-lg bg-charcoal-light mb-4">
+    <div class="relative aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 mb-4">
       <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
       ${p.originalPrice > p.price ? '<div class="absolute top-3 left-3 bg-rose-gold text-cream text-xs px-2 py-1 rounded">SALE</div>' : ''}
       <div class="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -681,7 +681,7 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} | Nimen Luxuries</title>
-    <meta name="description" content="Premium human hair and accessories for women who value quality and beauty.">
+    <meta name="description" content="Luxury hair beyond compare. From roots to tips, perfection never slips. Premium hair that shows you care.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -692,14 +692,20 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
         theme: {
           extend: {
             colors: {
-              charcoal: '#1a1a1a',
-              'charcoal-light': '#2d2d2d',
-              champagne: '#d4af94',
-              'champagne-light': '#e8d4c4',
-              'champagne-dark': '#b8956e',
-              nude: '#e5d4c0',
-              'rose-gold': '#b76e79',
-              cream: '#faf7f5',
+              charcoal: '#2d1f3d',
+              'charcoal-light': '#3d2d52',
+              champagne: '#e8a4c4',
+              'champagne-light': '#f5c6d6',
+              'champagne-dark': '#c77daa',
+              nude: '#f0d4e8',
+              'rose-gold': '#d4649a',
+              cream: '#fff5fa',
+              pink: '#ff85b3',
+              'pink-light': '#ffb3d1',
+              'pink-dark': '#e066a0',
+              purple: '#9b59b6',
+              'purple-light': '#bb8fce',
+              'purple-dark': '#7d3c98',
             },
             fontFamily: {
               serif: ['Cormorant Garamond', 'serif'],
@@ -711,34 +717,35 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
     </script>
     <style>
       * { scroll-behavior: smooth; }
-      body { font-family: 'Montserrat', sans-serif; background-color: #1a1a1a; color: #faf7f5; }
+      body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #2d1f3d 0%, #4a2c5a 25%, #5d3a6e 50%, #3d2d52 75%, #2d1f3d 100%); background-attachment: fixed; color: #fff5fa; min-height: 100vh; }
       .font-serif { font-family: 'Cormorant Garamond', serif; }
       .product-card:hover img { transform: scale(1.05); }
       .product-card img { transition: transform 0.5s ease; }
-      .gold-gradient { background: linear-gradient(135deg, #d4af94 0%, #b8956e 50%, #d4af94 100%); }
-      .text-gradient { background: linear-gradient(135deg, #d4af94 0%, #e8d4c4 50%, #d4af94 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+      .gold-gradient { background: linear-gradient(135deg, #ff85b3 0%, #9b59b6 50%, #ff85b3 100%); }
+      .pink-purple-gradient { background: linear-gradient(135deg, #ff85b3 0%, #e066a0 25%, #9b59b6 75%, #7d3c98 100%); }
+      .text-gradient { background: linear-gradient(135deg, #ff85b3 0%, #ffb3d1 25%, #bb8fce 50%, #9b59b6 75%, #ff85b3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
       .nav-link { position: relative; }
-      .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: #d4af94; transition: width 0.3s ease; }
+      .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: linear-gradient(90deg, #ff85b3, #9b59b6); transition: width 0.3s ease; }
       .nav-link:hover::after { width: 100%; }
-      .btn-primary { background: linear-gradient(135deg, #d4af94 0%, #b8956e 100%); color: #1a1a1a; transition: all 0.3s ease; }
-      .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212, 175, 148, 0.3); }
-      .btn-secondary { border: 1px solid #d4af94; color: #d4af94; transition: all 0.3s ease; }
-      .btn-secondary:hover { background: #d4af94; color: #1a1a1a; }
-      input:focus, select:focus, textarea:focus { outline: none; border-color: #d4af94; }
+      .btn-primary { background: linear-gradient(135deg, #ff85b3 0%, #e066a0 50%, #9b59b6 100%); color: #ffffff; transition: all 0.3s ease; }
+      .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 133, 179, 0.4); }
+      .btn-secondary { border: 1px solid #ff85b3; color: #ff85b3; transition: all 0.3s ease; }
+      .btn-secondary:hover { background: linear-gradient(135deg, #ff85b3, #9b59b6); color: #ffffff; border-color: transparent; }
+      input:focus, select:focus, textarea:focus { outline: none; border-color: #ff85b3; box-shadow: 0 0 10px rgba(255, 133, 179, 0.3); }
       ::-webkit-scrollbar { width: 8px; }
-      ::-webkit-scrollbar-track { background: #1a1a1a; }
-      ::-webkit-scrollbar-thumb { background: #d4af94; border-radius: 4px; }
+      ::-webkit-scrollbar-track { background: #2d1f3d; }
+      ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ff85b3, #9b59b6); border-radius: 4px; }
       .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
       @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-charcoal/95 backdrop-blur-sm border-b border-champagne/10">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-dark/95 via-charcoal/95 to-pink-dark/95 backdrop-blur-sm border-b border-pink/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <a href="/" class="flex items-center space-x-3">
-                    <img src="/static/images/3NbFbXXP.png" alt="Nimen Luxuries" class="h-14 w-auto">
+                    <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries" class="h-14 w-auto">
                 </a>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="/" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">HOME</a>
@@ -758,7 +765,7 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
                 </div>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-charcoal border-t border-champagne/10">
+        <div id="mobile-menu" class="hidden md:hidden bg-gradient-to-b from-purple-dark/95 to-charcoal/95 border-t border-pink/20">
             <div class="px-4 py-6 space-y-4">
                 <a href="/" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">HOME</a>
                 <a href="/shop" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">SHOP</a>
@@ -771,15 +778,15 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
     </nav>
     
     <!-- Search Modal -->
-    <div id="search-modal" class="hidden fixed inset-0 z-[60] bg-charcoal/95 backdrop-blur-sm">
+    <div id="search-modal" class="hidden fixed inset-0 z-[60] bg-gradient-to-br from-purple-dark/95 via-charcoal/95 to-pink-dark/95 backdrop-blur-sm">
         <div class="max-w-3xl mx-auto px-4 pt-32">
             <div class="flex items-center justify-between mb-8">
                 <h2 class="font-serif text-3xl text-champagne">Search</h2>
                 <button onclick="closeSearch()" class="text-cream/60 hover:text-champagne"><i class="fas fa-times text-2xl"></i></button>
             </div>
             <div class="relative">
-                <input type="text" id="search-input" placeholder="Search for wigs, bundles..." class="w-full bg-transparent border-b-2 border-champagne/30 focus:border-champagne text-cream text-lg py-4 pr-12 placeholder-cream/40">
-                <i class="fas fa-search absolute right-0 top-1/2 -translate-y-1/2 text-champagne/60"></i>
+                <input type="text" id="search-input" placeholder="Search for wigs, bundles..." class="w-full bg-transparent border-b-2 border-pink/40 focus:border-champagne text-cream text-lg py-4 pr-12 placeholder-cream/40">
+                <i class="fas fa-search absolute right-0 top-1/2 -translate-y-1/2 text-pink/70"></i>
             </div>
             <div id="search-results" class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4"></div>
         </div>
@@ -788,12 +795,12 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
     <main class="flex-1 pt-20">${content}</main>
     
     <!-- Footer -->
-    <footer class="bg-charcoal-light border-t border-champagne/10 mt-20">
+    <footer class="bg-gradient-to-r from-purple-dark/80 via-charcoal to-pink-dark/80 border-t border-pink/20 mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="md:col-span-1">
-                    <img src="/static/images/3NbFbXXP.png" alt="Nimen Luxuries" class="h-20 w-auto mb-6">
-                    <p class="text-cream/60 text-sm leading-relaxed">Premium human hair and accessories for women who value quality and beauty.</p>
+                    <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries" class="h-20 w-auto mb-6">
+                    <p class="text-cream/60 text-sm leading-relaxed">From roots to tips, perfection never slips.<br>Premium hair that shows you care.</p>
                     <div class="flex space-x-4 mt-6">
                         <a href="#" class="text-cream/60 hover:text-champagne transition-colors"><i class="fab fa-instagram text-xl"></i></a>
                         <a href="#" class="text-cream/60 hover:text-champagne transition-colors"><i class="fab fa-tiktok text-xl"></i></a>
@@ -821,12 +828,12 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
                     <h4 class="font-serif text-xl text-champagne mb-6">Newsletter</h4>
                     <p class="text-cream/60 text-sm mb-4">Subscribe for exclusive offers.</p>
                     <form class="space-y-3">
-                        <input type="email" placeholder="Your email" class="w-full bg-charcoal border border-champagne/30 rounded px-4 py-3 text-cream text-sm placeholder-cream/40">
+                        <input type="email" placeholder="Your email" class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream text-sm placeholder-cream/40">
                         <button type="submit" class="btn-primary w-full py-3 rounded text-sm font-medium tracking-wider">SUBSCRIBE</button>
                     </form>
                 </div>
             </div>
-            <div class="border-t border-champagne/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between">
+            <div class="border-t border-pink/20 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between">
                 <p class="text-cream/40 text-xs">© 2026 Nimen Luxuries. All rights reserved.</p>
                 <div class="flex items-center space-x-4 mt-4 md:mt-0">
                     <i class="fab fa-cc-visa text-2xl text-cream/40"></i>
@@ -877,7 +884,7 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
         const res = await fetch('/api/products?search=' + encodeURIComponent(query));
         const data = await res.json();
         document.getElementById('search-results').innerHTML = data.products.slice(0, 6).map(p => 
-          '<a href="/product/' + p.id + '" class="block bg-charcoal rounded-lg overflow-hidden hover:ring-1 ring-champagne/30"><img src="' + p.image + '" alt="' + p.name + '" class="w-full aspect-[3/4] object-cover"><div class="p-3"><h4 class="text-cream text-sm truncate">' + p.name + '</h4><p class="text-champagne font-medium">$' + p.price + '</p></div></a>'
+          '<a href="/product/' + p.id + '" class="block bg-charcoal rounded-lg overflow-hidden hover:ring-1 ring-pink/40"><img src="' + p.image + '" alt="' + p.name + '" class="w-full aspect-[3/4] object-cover"><div class="p-3"><h4 class="text-cream text-sm truncate">' + p.name + '</h4><p class="text-champagne font-medium">$' + p.price + '</p></div></a>'
         ).join('');
       });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSearch(); });
@@ -896,15 +903,15 @@ app.get('/', (c) => {
     <!-- Hero Section -->
     <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
       <div class="absolute inset-0">
-        <div class="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-purple-dark/80 via-charcoal/60 to-pink-dark/40 z-10"></div>
         <img src="/static/images/HddFOqAy.jpg" alt="Luxury Hair" class="w-full h-full object-cover object-top">
       </div>
       <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
         <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-cream mb-6 animate-fade-in">
-          Luxury Hair<br><span class="text-gradient">Crafted for Elegance</span>
+          Luxury Hair<br><span class="text-gradient">Beyond Compare</span>
         </h1>
         <p class="text-cream/70 text-lg md:text-xl mb-10 max-w-2xl mx-auto animate-fade-in" style="animation-delay: 0.2s">
-          Premium human hair and accessories for women who value quality and beauty.
+          From roots to tips, perfection never slips.<br>Premium hair that shows you care.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style="animation-delay: 0.4s">
           <a href="/shop" class="btn-primary px-10 py-4 rounded text-sm font-medium tracking-wider">SHOP COLLECTION</a>
@@ -912,7 +919,7 @@ app.get('/', (c) => {
         </div>
       </div>
       <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
-        <i class="fas fa-chevron-down text-champagne/60 text-2xl"></i>
+        <i class="fas fa-chevron-down text-pink/70 text-2xl"></i>
       </div>
     </section>
     
@@ -961,7 +968,7 @@ app.get('/', (c) => {
     </section>
     
     <!-- Featured Products -->
-    <section class="py-20 px-4 bg-charcoal-light">
+    <section class="py-20 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row items-center justify-between mb-12">
           <div>
@@ -1006,7 +1013,7 @@ app.get('/', (c) => {
     </section>
     
     <!-- Video Section -->
-    <section class="py-20 px-4 bg-charcoal-light">
+    <section class="py-20 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="font-serif text-4xl md:text-5xl text-gradient mb-4">See It in Motion</h2>
@@ -1037,7 +1044,7 @@ app.get('/', (c) => {
           <p class="text-cream/60">Real reviews from real customers</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-charcoal-light p-8 rounded-lg border border-champagne/10">
+          <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 p-8 rounded-lg border border-pink/20">
             <div class="flex text-champagne text-sm mb-4">★★★★★</div>
             <p class="text-cream/80 text-sm leading-relaxed mb-6">"The quality of this hair is absolutely amazing! It's so soft and the curls hold beautifully. I've received so many compliments!"</p>
             <div class="flex items-center gap-3">
@@ -1045,7 +1052,7 @@ app.get('/', (c) => {
               <div><p class="text-cream font-medium text-sm">Ashley M.</p><p class="text-cream/40 text-xs">Verified Buyer</p></div>
             </div>
           </div>
-          <div class="bg-charcoal-light p-8 rounded-lg border border-champagne/10">
+          <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 p-8 rounded-lg border border-pink/20">
             <div class="flex text-champagne text-sm mb-4">★★★★★</div>
             <p class="text-cream/80 text-sm leading-relaxed mb-6">"Best lace front I've ever purchased. The hairline looks so natural and the hair doesn't tangle or shed. Customer service was also excellent!"</p>
             <div class="flex items-center gap-3">
@@ -1053,7 +1060,7 @@ app.get('/', (c) => {
               <div><p class="text-cream font-medium text-sm">Keisha T.</p><p class="text-cream/40 text-xs">Verified Buyer</p></div>
             </div>
           </div>
-          <div class="bg-charcoal-light p-8 rounded-lg border border-champagne/10">
+          <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 p-8 rounded-lg border border-pink/20">
             <div class="flex text-champagne text-sm mb-4">★★★★★</div>
             <p class="text-cream/80 text-sm leading-relaxed mb-6">"I'm obsessed with my new wig! The color is gorgeous and it looks like it's growing from my scalp. Shipping was fast too. 10/10 recommend!"</p>
             <div class="flex items-center gap-3">
@@ -1076,7 +1083,7 @@ app.get('/', (c) => {
     </section>
     
     <!-- Instagram Feed -->
-    <section class="py-20 px-4 bg-charcoal-light">
+    <section class="py-20 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="font-serif text-4xl md:text-5xl text-gradient mb-4">@NimenLuxuries</h2>
@@ -1102,7 +1109,7 @@ app.get('/shop', (c) => {
   const allProductsHTML = products.map(productCard).join('')
   
   const content = `
-    <section class="pt-16 pb-8 px-4 bg-charcoal-light">
+    <section class="pt-16 pb-8 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-7xl mx-auto">
         <h1 class="font-serif text-4xl md:text-5xl text-gradient text-center mb-4">Shop Collection</h1>
         <p class="text-cream/60 text-center max-w-2xl mx-auto">Discover our premium selection of 100% human hair wigs, bundles, and accessories</p>
@@ -1111,16 +1118,16 @@ app.get('/shop', (c) => {
     
     <section class="py-8 px-4">
       <div class="max-w-7xl mx-auto">
-        <div class="flex flex-wrap items-center gap-4 mb-8 pb-8 border-b border-champagne/10">
+        <div class="flex flex-wrap items-center gap-4 mb-8 pb-8 border-b border-pink/20">
           <span class="text-cream/60 text-sm">Filter:</span>
-          <select id="category-filter" onchange="applyFilters()" class="bg-charcoal border border-champagne/30 rounded px-4 py-2 text-cream text-sm">
+          <select id="category-filter" onchange="applyFilters()" class="bg-charcoal border border-pink/40 rounded px-4 py-2 text-cream text-sm">
             <option value="">All Categories</option>
             <option value="wigs">Wigs</option>
             <option value="bundles">Bundles</option>
             <option value="closures">Closures</option>
             <option value="frontals">Frontals</option>
           </select>
-          <select id="texture-filter" onchange="applyFilters()" class="bg-charcoal border border-champagne/30 rounded px-4 py-2 text-cream text-sm">
+          <select id="texture-filter" onchange="applyFilters()" class="bg-charcoal border border-pink/40 rounded px-4 py-2 text-cream text-sm">
             <option value="">All Textures</option>
             <option value="straight">Straight</option>
             <option value="body-wave">Body Wave</option>
@@ -1128,7 +1135,7 @@ app.get('/shop', (c) => {
             <option value="curly">Curly</option>
             <option value="bouncy">Bouncy</option>
           </select>
-          <select id="sort-filter" onchange="applyFilters()" class="bg-charcoal border border-champagne/30 rounded px-4 py-2 text-cream text-sm">
+          <select id="sort-filter" onchange="applyFilters()" class="bg-charcoal border border-pink/40 rounded px-4 py-2 text-cream text-sm">
             <option value="">Sort By</option>
             <option value="price-low">Price: Low to High</option>
             <option value="price-high">Price: High to Low</option>
@@ -1166,7 +1173,7 @@ app.get('/shop', (c) => {
         document.getElementById('products-grid').innerHTML = filtered.map(p => {
           const saleTag = p.originalPrice > p.price ? '<div class="absolute top-3 left-3 bg-rose-gold text-cream text-xs px-2 py-1 rounded">SALE</div>' : '';
           const origPrice = p.originalPrice > p.price ? '<span class="text-cream/40 text-sm line-through">$' + p.originalPrice + '</span>' : '';
-          return '<a href="/product/' + p.id + '" class="product-card group"><div class="relative aspect-[3/4] overflow-hidden rounded-lg bg-charcoal-light mb-4"><img src="' + p.image + '" alt="' + p.name + '" class="w-full h-full object-cover">' + saleTag + '<div class="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="btn-primary px-6 py-2 rounded text-xs font-medium tracking-wider">QUICK VIEW</span></div></div><h3 class="text-cream font-medium text-sm mb-1 group-hover:text-champagne transition-colors">' + p.name + '</h3><div class="flex items-center gap-2"><span class="text-champagne font-serif text-lg">$' + p.price + '</span>' + origPrice + '</div><div class="flex items-center gap-1 mt-2"><div class="flex text-champagne text-xs">★★★★★</div><span class="text-cream/40 text-xs">(' + p.reviews + ')</span></div></a>';
+          return '<a href="/product/' + p.id + '" class="product-card group"><div class="relative aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 mb-4"><img src="' + p.image + '" alt="' + p.name + '" class="w-full h-full object-cover">' + saleTag + '<div class="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="btn-primary px-6 py-2 rounded text-xs font-medium tracking-wider">QUICK VIEW</span></div></div><h3 class="text-cream font-medium text-sm mb-1 group-hover:text-champagne transition-colors">' + p.name + '</h3><div class="flex items-center gap-2"><span class="text-champagne font-serif text-lg">$' + p.price + '</span>' + origPrice + '</div><div class="flex items-center gap-1 mt-2"><div class="flex text-champagne text-xs">★★★★★</div><span class="text-cream/40 text-xs">(' + p.reviews + ')</span></div></a>';
         }).join('');
       }
       
@@ -1199,11 +1206,11 @@ app.get('/product/:id', (c) => {
   
   const relatedProducts = products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 4)
   const lengthsHTML = product.lengths ? product.lengths.map((len, i) => 
-    `<button onclick="selectLength(this)" class="length-btn px-4 py-2 border border-champagne/30 rounded text-sm text-cream/80 hover:border-champagne hover:text-champagne transition-colors ${i === 0 ? 'border-champagne text-champagne' : ''}" data-length="${len}">${len}</button>`
+    `<button onclick="selectLength(this)" class="length-btn px-4 py-2 border border-pink/40 rounded text-sm text-cream/80 hover:border-champagne hover:text-champagne transition-colors ${i === 0 ? 'border-champagne text-champagne' : ''}" data-length="${len}">${len}</button>`
   ).join('') : ''
   
   const densitiesHTML = product.densities && product.densities[0] !== 'Standard' ? product.densities.map((den, i) => 
-    `<button onclick="selectDensity(this)" class="density-btn px-4 py-2 border border-champagne/30 rounded text-sm text-cream/80 hover:border-champagne hover:text-champagne transition-colors ${i === 0 ? 'border-champagne text-champagne' : ''}" data-density="${den}">${den}</button>`
+    `<button onclick="selectDensity(this)" class="density-btn px-4 py-2 border border-pink/40 rounded text-sm text-cream/80 hover:border-champagne hover:text-champagne transition-colors ${i === 0 ? 'border-champagne text-champagne' : ''}" data-density="${den}">${den}</button>`
   ).join('') : ''
   
   const content = `
@@ -1219,7 +1226,7 @@ app.get('/product/:id', (c) => {
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div class="space-y-4">
-            <div class="aspect-[3/4] overflow-hidden rounded-lg bg-charcoal-light">
+            <div class="aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
               <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
             </div>
           </div>
@@ -1254,7 +1261,7 @@ app.get('/product/:id', (c) => {
             ` : ''}
             
             <div class="flex flex-col sm:flex-row gap-4 mb-8">
-              <div class="flex items-center border border-champagne/30 rounded">
+              <div class="flex items-center border border-pink/40 rounded">
                 <button onclick="updateQty(-1)" class="px-4 py-3 text-cream/60 hover:text-champagne">-</button>
                 <span id="qty" class="px-4 py-3 text-cream">1</span>
                 <button onclick="updateQty(1)" class="px-4 py-3 text-cream/60 hover:text-champagne">+</button>
@@ -1262,7 +1269,7 @@ app.get('/product/:id', (c) => {
               <button onclick="addProductToCart()" class="flex-1 btn-primary py-4 rounded text-sm font-medium tracking-wider">ADD TO BAG</button>
             </div>
             
-            <div class="border-t border-champagne/10 pt-8 space-y-4">
+            <div class="border-t border-pink/20 pt-8 space-y-4">
               <div class="flex items-center gap-3"><i class="fas fa-check text-champagne"></i><span class="text-cream/70 text-sm">100% Premium Human Hair</span></div>
               <div class="flex items-center gap-3"><i class="fas fa-check text-champagne"></i><span class="text-cream/70 text-sm">HD Swiss Lace Frontal</span></div>
               <div class="flex items-center gap-3"><i class="fas fa-check text-champagne"></i><span class="text-cream/70 text-sm">Pre-Plucked Natural Hairline</span></div>
@@ -1320,7 +1327,7 @@ app.get('/product/:id', (c) => {
 // About Page
 app.get('/about', (c) => {
   const content = `
-    <section class="relative py-32 px-4 bg-charcoal-light">
+    <section class="relative py-32 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-4xl mx-auto text-center">
         <h1 class="font-serif text-5xl md:text-6xl text-gradient mb-6">Our Story</h1>
         <p class="text-cream/70 text-lg">Crafting luxury hair experiences for women who deserve the very best.</p>
@@ -1330,7 +1337,7 @@ app.get('/about', (c) => {
     <section class="py-20 px-4">
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div><img src="/static/images/3NbFbXXP.png" alt="Nimen Luxuries" class="w-full max-w-md mx-auto"></div>
+          <div><img src="/static/images/logo-transparent.png" alt="Nimen Luxuries" class="w-full max-w-md mx-auto"></div>
           <div>
             <h2 class="font-serif text-3xl md:text-4xl text-champagne mb-6">The Beginning</h2>
             <p class="text-cream/70 leading-relaxed mb-6">Nimen Luxuries was born from a simple belief: every woman deserves access to premium quality hair that makes her feel confident, beautiful, and unstoppable.</p>
@@ -1341,7 +1348,7 @@ app.get('/about', (c) => {
       </div>
     </section>
     
-    <section class="py-20 px-4 bg-charcoal-light">
+    <section class="py-20 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-6xl mx-auto">
         <h2 class="font-serif text-3xl md:text-4xl text-gradient text-center mb-12">Our Values</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1370,7 +1377,7 @@ app.get('/about', (c) => {
 // Hair Care Guide
 app.get('/hair-care', (c) => {
   const content = `
-    <section class="relative py-32 px-4 bg-charcoal-light">
+    <section class="relative py-32 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-4xl mx-auto text-center">
         <h1 class="font-serif text-5xl md:text-6xl text-gradient mb-6">Hair Care Guide</h1>
         <p class="text-cream/70 text-lg">Expert tips to keep your Nimen hair looking flawless.</p>
@@ -1428,7 +1435,7 @@ app.get('/hair-care', (c) => {
 // Contact Page
 app.get('/contact', (c) => {
   const content = `
-    <section class="relative py-32 px-4 bg-charcoal-light">
+    <section class="relative py-32 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-4xl mx-auto text-center">
         <h1 class="font-serif text-5xl md:text-6xl text-gradient mb-6">Get In Touch</h1>
         <p class="text-cream/70 text-lg">We'd love to hear from you. Our team is always here to help.</p>
@@ -1442,11 +1449,11 @@ app.get('/contact', (c) => {
             <h2 class="font-serif text-2xl text-champagne mb-6">Send Us a Message</h2>
             <form id="contact-form" class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input type="text" placeholder="First Name *" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
-                <input type="text" placeholder="Last Name *" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
+                <input type="text" placeholder="First Name *" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                <input type="text" placeholder="Last Name *" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
               </div>
-              <input type="email" placeholder="Email Address *" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
-              <select required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream">
+              <input type="email" placeholder="Email Address *" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+              <select required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream">
                 <option value="">Select a topic *</option>
                 <option value="order">Order Inquiry</option>
                 <option value="product">Product Question</option>
@@ -1454,7 +1461,7 @@ app.get('/contact', (c) => {
                 <option value="returns">Returns & Exchanges</option>
                 <option value="other">Other</option>
               </select>
-              <textarea placeholder="Message *" required rows="5" class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40 resize-none"></textarea>
+              <textarea placeholder="Message *" required rows="5" class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40 resize-none"></textarea>
               <button type="submit" class="btn-primary w-full py-4 rounded text-sm font-medium tracking-wider">SEND MESSAGE</button>
             </form>
           </div>
@@ -1489,7 +1496,7 @@ app.get('/contact', (c) => {
 // FAQ Page
 app.get('/faq', (c) => {
   const content = `
-    <section class="relative py-32 px-4 bg-charcoal-light">
+    <section class="relative py-32 px-4 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
       <div class="max-w-4xl mx-auto text-center">
         <h1 class="font-serif text-5xl md:text-6xl text-gradient mb-6">FAQ</h1>
         <p class="text-cream/70 text-lg">Find answers to commonly asked questions</p>
@@ -1558,7 +1565,7 @@ app.get('/faq', (c) => {
           </div>
         </div>
         
-        <div class="mt-16 p-8 bg-charcoal-light rounded-lg border border-champagne/10 text-center">
+        <div class="mt-16 p-8 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 rounded-lg border border-pink/20 text-center">
           <h3 class="font-serif text-2xl text-champagne mb-4">Still Have Questions?</h3>
           <p class="text-cream/70 mb-6">Our support team is happy to help.</p>
           <a href="/contact" class="btn-primary px-10 py-3 rounded text-sm font-medium tracking-wider inline-block">CONTACT SUPPORT</a>
@@ -1597,10 +1604,10 @@ app.get('/cart', (c) => {
         
         let itemsHTML = '';
         cart.forEach(item => {
-          itemsHTML += '<div class="flex gap-6 p-6 bg-charcoal-light rounded-lg"><img src="' + item.image + '" alt="' + item.name + '" class="w-24 h-32 object-cover rounded"><div class="flex-1"><div class="flex justify-between"><h3 class="text-cream font-medium">' + item.name + '</h3><button onclick="removeFromCart(\\'' + item.id + '\\'); renderCartPage();" class="text-cream/40 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div><p class="text-cream/60 text-sm mt-1">' + (item.variant || '') + '</p><div class="flex items-center justify-between mt-4"><div class="flex items-center gap-3"><button onclick="updateQuantity(\\'' + item.id + '\\', -1); renderCartPage();" class="w-8 h-8 border border-champagne/30 rounded flex items-center justify-center text-cream/60 hover:text-champagne">-</button><span class="text-cream">' + item.quantity + '</span><button onclick="updateQuantity(\\'' + item.id + '\\', 1); renderCartPage();" class="w-8 h-8 border border-champagne/30 rounded flex items-center justify-center text-cream/60 hover:text-champagne">+</button></div><span class="text-champagne font-serif text-xl">$' + (item.price * item.quantity).toFixed(2) + '</span></div></div></div>';
+          itemsHTML += '<div class="flex gap-6 p-6 bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 rounded-lg"><img src="' + item.image + '" alt="' + item.name + '" class="w-24 h-32 object-cover rounded"><div class="flex-1"><div class="flex justify-between"><h3 class="text-cream font-medium">' + item.name + '</h3><button onclick="removeFromCart(\\'' + item.id + '\\'); renderCartPage();" class="text-cream/40 hover:text-red-400"><i class="fas fa-trash-alt"></i></button></div><p class="text-cream/60 text-sm mt-1">' + (item.variant || '') + '</p><div class="flex items-center justify-between mt-4"><div class="flex items-center gap-3"><button onclick="updateQuantity(\\'' + item.id + '\\', -1); renderCartPage();" class="w-8 h-8 border border-pink/40 rounded flex items-center justify-center text-cream/60 hover:text-champagne">-</button><span class="text-cream">' + item.quantity + '</span><button onclick="updateQuantity(\\'' + item.id + '\\', 1); renderCartPage();" class="w-8 h-8 border border-pink/40 rounded flex items-center justify-center text-cream/60 hover:text-champagne">+</button></div><span class="text-champagne font-serif text-xl">$' + (item.price * item.quantity).toFixed(2) + '</span></div></div></div>';
         });
         
-        container.innerHTML = '<div class="grid grid-cols-1 lg:grid-cols-3 gap-12"><div class="lg:col-span-2 space-y-6">' + itemsHTML + '</div><div class="lg:col-span-1"><div class="bg-charcoal-light p-8 rounded-lg sticky top-28"><h2 class="font-serif text-xl text-champagne mb-6">Order Summary</h2><div class="space-y-4 mb-6"><div class="flex justify-between text-cream/70"><span>Subtotal</span><span>$' + subtotal.toFixed(2) + '</span></div><div class="flex justify-between text-cream/70"><span>Shipping</span><span>' + (shipping === 0 ? 'FREE' : '$' + shipping.toFixed(2)) + '</span></div>' + (subtotal < 200 ? '<p class="text-champagne text-sm">Add $' + (200 - subtotal).toFixed(2) + ' more for free shipping!</p>' : '') + '</div><div class="border-t border-champagne/20 pt-4 mb-6"><div class="flex justify-between text-cream"><span class="font-medium">Total</span><span class="font-serif text-2xl text-champagne">$' + total.toFixed(2) + '</span></div></div><a href="/checkout" class="btn-primary w-full py-4 rounded text-sm font-medium tracking-wider block text-center">PROCEED TO CHECKOUT</a><a href="/shop" class="btn-secondary w-full py-4 rounded text-sm font-medium tracking-wider block text-center mt-4">CONTINUE SHOPPING</a></div></div></div>';
+        container.innerHTML = '<div class="grid grid-cols-1 lg:grid-cols-3 gap-12"><div class="lg:col-span-2 space-y-6">' + itemsHTML + '</div><div class="lg:col-span-1"><div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 p-8 rounded-lg sticky top-28"><h2 class="font-serif text-xl text-champagne mb-6">Order Summary</h2><div class="space-y-4 mb-6"><div class="flex justify-between text-cream/70"><span>Subtotal</span><span>$' + subtotal.toFixed(2) + '</span></div><div class="flex justify-between text-cream/70"><span>Shipping</span><span>' + (shipping === 0 ? 'FREE' : '$' + shipping.toFixed(2)) + '</span></div>' + (subtotal < 200 ? '<p class="text-champagne text-sm">Add $' + (200 - subtotal).toFixed(2) + ' more for free shipping!</p>' : '') + '</div><div class="border-t border-champagne/20 pt-4 mb-6"><div class="flex justify-between text-cream"><span class="font-medium">Total</span><span class="font-serif text-2xl text-champagne">$' + total.toFixed(2) + '</span></div></div><a href="/checkout" class="btn-primary w-full py-4 rounded text-sm font-medium tracking-wider block text-center">PROCEED TO CHECKOUT</a><a href="/shop" class="btn-secondary w-full py-4 rounded text-sm font-medium tracking-wider block text-center mt-4">CONTINUE SHOPPING</a></div></div></div>';
       }
       renderCartPage();
     </script>
@@ -1621,24 +1628,24 @@ app.get('/checkout', (c) => {
               <div>
                 <h2 class="font-serif text-xl text-champagne mb-4">Contact Information</h2>
                 <div class="space-y-4">
-                  <input type="email" placeholder="Email address" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
-                  <input type="tel" placeholder="Phone number" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  <input type="email" placeholder="Email address" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  <input type="tel" placeholder="Phone number" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
                 </div>
               </div>
               <div>
                 <h2 class="font-serif text-xl text-champagne mb-4">Shipping Address</h2>
                 <div class="space-y-4">
                   <div class="grid grid-cols-2 gap-4">
-                    <input type="text" placeholder="First name" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
-                    <input type="text" placeholder="Last name" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    <input type="text" placeholder="First name" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    <input type="text" placeholder="Last name" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
                   </div>
-                  <input type="text" placeholder="Address" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
+                  <input type="text" placeholder="Address" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
                   <div class="grid grid-cols-3 gap-4">
-                    <input type="text" placeholder="City" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
-                    <input type="text" placeholder="State" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
-                    <input type="text" placeholder="ZIP code" required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    <input type="text" placeholder="City" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    <input type="text" placeholder="State" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    <input type="text" placeholder="ZIP code" required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
                   </div>
-                  <select required class="w-full bg-charcoal-light border border-champagne/30 rounded px-4 py-3 text-cream">
+                  <select required class="w-full bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded px-4 py-3 text-cream">
                     <option value="US">United States</option>
                     <option value="CA">Canada</option>
                     <option value="UK">United Kingdom</option>
@@ -1649,13 +1656,13 @@ app.get('/checkout', (c) => {
               </div>
               <div>
                 <h2 class="font-serif text-xl text-champagne mb-4">Payment</h2>
-                <div class="bg-charcoal-light border border-champagne/30 rounded p-6">
+                <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 border border-pink/40 rounded p-6">
                   <div class="flex items-center gap-2 mb-4"><i class="fab fa-cc-stripe text-2xl text-champagne"></i><span class="text-cream">Secure payment via Stripe</span></div>
                   <div class="space-y-4">
-                    <input type="text" placeholder="Card number" required class="w-full bg-charcoal border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
+                    <input type="text" placeholder="Card number" required class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
                     <div class="grid grid-cols-2 gap-4">
-                      <input type="text" placeholder="MM / YY" required class="w-full bg-charcoal border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
-                      <input type="text" placeholder="CVC" required class="w-full bg-charcoal border border-champagne/30 rounded px-4 py-3 text-cream placeholder-cream/40">
+                      <input type="text" placeholder="MM / YY" required class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
+                      <input type="text" placeholder="CVC" required class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream placeholder-cream/40">
                     </div>
                   </div>
                   <div class="flex items-center gap-4 mt-4 text-cream/40 text-xs"><i class="fas fa-lock"></i><span>Your payment information is encrypted and secure</span></div>
@@ -1665,7 +1672,7 @@ app.get('/checkout', (c) => {
             </form>
           </div>
           <div>
-            <div class="bg-charcoal-light p-8 rounded-lg sticky top-28">
+            <div class="bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 p-8 rounded-lg sticky top-28">
               <h2 class="font-serif text-xl text-champagne mb-6">Order Summary</h2>
               <div id="checkout-items" class="space-y-4 mb-6 max-h-80 overflow-y-auto"></div>
               <div class="border-t border-champagne/20 pt-6 space-y-4">
