@@ -1,0 +1,9 @@
+# Robots.txt for Nimen Luxuries
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://nimenluxuries.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1

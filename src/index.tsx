@@ -621,6 +621,63 @@ const app = new Hono()
 app.use('*', cors())
 app.use('/static/*', serveStatic({ root: './public' }))
 
+// Serve SEO files from root
+app.get('/robots.txt', (c) => {
+  return c.text(`# Robots.txt for Nimen Luxuries
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://nimenluxuries.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+`)
+})
+
+app.get('/sitemap.xml', (c) => {
+  c.header('Content-Type', 'application/xml')
+  return c.body(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://nimenluxuries.com/</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://nimenluxuries.com/shop</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://nimenluxuries.com/about</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nimenluxuries.com/hair-care</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nimenluxuries.com/contact</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://nimenluxuries.com/faq</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>`)
+})
+
 // API Routes
 app.get('/api/products', (c) => {
   const category = c.req.query('category')
@@ -655,7 +712,7 @@ app.get('/api/products/:id', (c) => {
 const productCard = (p: Product) => `
   <a href="/product/${p.id}" class="product-card group">
     <div class="relative aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 mb-4">
-      <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+      <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" width="300" height="400" decoding="async">
       ${p.originalPrice > p.price ? '<div class="absolute top-3 left-3 bg-rose-gold text-cream text-xs px-2 py-1 rounded">SALE</div>' : ''}
       <div class="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
         <span class="btn-primary px-6 py-2 rounded text-xs font-medium tracking-wider">QUICK VIEW</span>
@@ -681,11 +738,53 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title} | Nimen Luxuries</title>
-    <meta name="description" content="Luxury hair beyond compare. From roots to tips, perfection never slips. Premium hair that shows you care.">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Luxury hair beyond compare. From roots to tips, perfection never slips. Premium human hair wigs, bundles, closures and frontals.">
+    <meta name="keywords" content="luxury hair, human hair wigs, hair bundles, lace closures, lace frontals, premium wigs, hair extensions">
+    <meta name="author" content="Nimen Luxuries">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://nimenluxuries.com/">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="${title} | Nimen Luxuries">
+    <meta property="og:description" content="Luxury hair beyond compare. Premium human hair wigs, bundles, closures and frontals.">
+    <meta property="og:image" content="/static/images/logo-3d.png">
+    <meta property="og:url" content="https://nimenluxuries.com/">
+    <meta property="og:site_name" content="Nimen Luxuries">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${title} | Nimen Luxuries">
+    <meta name="twitter:description" content="Luxury hair beyond compare. Premium human hair wigs, bundles, closures and frontals.">
+    <meta name="twitter:image" content="/static/images/logo-3d.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/logo-transparent.png">
+    <link rel="apple-touch-icon" href="/static/images/logo-transparent.png">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#2d1f3d">
+    <meta name="msapplication-TileColor" content="#2d1f3d">
+    
+    <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="/static/images/logo-transparent.png" as="image">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" as="style">
+    
+    <!-- Fonts with display=swap for performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome - defer non-critical -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"></noscript>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -715,135 +814,208 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
         }
       }
     </script>
+    
+    <!-- Critical CSS Inlined -->
     <style>
-      * { scroll-behavior: smooth; }
-      body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #2d1f3d 0%, #4a2c5a 25%, #5d3a6e 50%, #3d2d52 75%, #2d1f3d 100%); background-attachment: fixed; color: #fff5fa; min-height: 100vh; }
-      .font-serif { font-family: 'Cormorant Garamond', serif; }
-      .product-card:hover img { transform: scale(1.05); }
-      .product-card img { transition: transform 0.5s ease; }
-      .gold-gradient { background: linear-gradient(135deg, #ff85b3 0%, #9b59b6 50%, #ff85b3 100%); }
-      .pink-purple-gradient { background: linear-gradient(135deg, #ff85b3 0%, #e066a0 25%, #9b59b6 75%, #7d3c98 100%); }
-      .text-gradient { background: linear-gradient(135deg, #ff85b3 0%, #ffb3d1 25%, #bb8fce 50%, #9b59b6 75%, #ff85b3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-      .nav-link { position: relative; }
-      .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: linear-gradient(90deg, #ff85b3, #9b59b6); transition: width 0.3s ease; }
-      .nav-link:hover::after { width: 100%; }
-      .btn-primary { background: linear-gradient(135deg, #ff85b3 0%, #e066a0 50%, #9b59b6 100%); color: #ffffff; transition: all 0.3s ease; }
-      .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255, 133, 179, 0.4); }
-      .btn-secondary { border: 1px solid #ff85b3; color: #ff85b3; transition: all 0.3s ease; }
-      .btn-secondary:hover { background: linear-gradient(135deg, #ff85b3, #9b59b6); color: #ffffff; border-color: transparent; }
-      input:focus, select:focus, textarea:focus { outline: none; border-color: #ff85b3; box-shadow: 0 0 10px rgba(255, 133, 179, 0.3); }
-      ::-webkit-scrollbar { width: 8px; }
-      ::-webkit-scrollbar-track { background: #2d1f3d; }
-      ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ff85b3, #9b59b6); border-radius: 4px; }
-      .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+      /* Critical styles for above-the-fold content */
+      *{box-sizing:border-box;margin:0;padding:0}
+      html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+      body{font-family:'Montserrat',sans-serif;background:linear-gradient(135deg,#2d1f3d 0%,#4a2c5a 25%,#5d3a6e 50%,#3d2d52 75%,#2d1f3d 100%);background-attachment:fixed;color:#fff5fa;min-height:100vh;line-height:1.5}
+      img,video{max-width:100%;height:auto;display:block}
+      a{color:inherit;text-decoration:none}
+      button{cursor:pointer;border:none;background:none;font-family:inherit}
+      
+      /* Font classes */
+      .font-serif{font-family:'Cormorant Garamond',serif}
+      
+      /* Animation classes */
+      .product-card:hover img{transform:scale(1.05)}
+      .product-card img{transition:transform 0.5s ease}
+      .gold-gradient{background:linear-gradient(135deg,#ff85b3 0%,#9b59b6 50%,#ff85b3 100%)}
+      .pink-purple-gradient{background:linear-gradient(135deg,#ff85b3 0%,#e066a0 25%,#9b59b6 75%,#7d3c98 100%)}
+      .text-gradient{background:linear-gradient(135deg,#ff85b3 0%,#ffb3d1 25%,#bb8fce 50%,#9b59b6 75%,#ff85b3 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      
+      /* Navigation styles */
+      .nav-link{position:relative}
+      .nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:linear-gradient(90deg,#ff85b3,#9b59b6);transition:width 0.3s ease}
+      .nav-link:hover::after{width:100%}
+      
+      /* Button styles */
+      .btn-primary{background:linear-gradient(135deg,#ff85b3 0%,#e066a0 50%,#9b59b6 100%);color:#fff;transition:all 0.3s ease}
+      .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,133,179,0.4)}
+      .btn-secondary{border:1px solid #ff85b3;color:#ff85b3;transition:all 0.3s ease}
+      .btn-secondary:hover{background:linear-gradient(135deg,#ff85b3,#9b59b6);color:#fff;border-color:transparent}
+      
+      /* Focus states for accessibility */
+      a:focus,button:focus,input:focus,select:focus,textarea:focus{outline:2px solid #ff85b3;outline-offset:2px}
+      input:focus,select:focus,textarea:focus{box-shadow:0 0 10px rgba(255,133,179,0.3)}
+      
+      /* Skip link for accessibility */
+      .skip-link{position:absolute;top:-40px;left:0;background:#ff85b3;color:#2d1f3d;padding:8px 16px;z-index:100;transition:top 0.3s}
+      .skip-link:focus{top:0}
+      
+      /* Scrollbar */
+      ::-webkit-scrollbar{width:8px}
+      ::-webkit-scrollbar-track{background:#2d1f3d}
+      ::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#ff85b3,#9b59b6);border-radius:4px}
+      
+      /* Animations */
+      .animate-fade-in{animation:fadeIn 0.6s ease forwards}
+      @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+      
+      /* Reduced motion preference */
+      @media(prefers-reduced-motion:reduce){
+        *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+      }
     </style>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Nimen Luxuries",
+      "url": "https://nimenluxuries.com",
+      "logo": "https://nimenluxuries.com/static/images/logo-3d.png",
+      "description": "Premium human hair wigs, bundles, closures and frontals",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-800-NIMEN",
+        "contactType": "customer service"
+      },
+      "sameAs": [
+        "https://instagram.com/nimenluxuries",
+        "https://tiktok.com/@nimenluxuries",
+        "https://facebook.com/nimenluxuries"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Nimen Luxuries",
+      "url": "https://nimenluxuries.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://nimenluxuries.com/shop?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 </head>
 <body class="min-h-screen flex flex-col">
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-dark/95 via-charcoal/95 to-pink-dark/95 backdrop-blur-sm border-b border-pink/20">
+    <header role="banner">
+      <nav class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-dark/95 via-charcoal/95 to-pink-dark/95 backdrop-blur-sm border-b border-pink/20" role="navigation" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <a href="/" class="flex items-center space-x-2">
-                    <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries Icon" class="h-12 w-auto">
-                    <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="h-10 w-auto hidden sm:block">
+                <a href="/" class="flex items-center space-x-2" aria-label="Nimen Luxuries Home">
+                    <img src="/static/images/logo-transparent.png" alt="" class="h-12 w-auto" width="48" height="48" loading="eager">
+                    <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="h-10 w-auto hidden sm:block" width="180" height="40" loading="eager">
                 </a>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">HOME</a>
-                    <a href="/shop" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">SHOP</a>
-                    <a href="/about" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">ABOUT</a>
-                    <a href="/hair-care" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">HAIR CARE</a>
-                    <a href="/contact" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">CONTACT</a>
-                    <a href="/faq" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">FAQ</a>
+                <div class="hidden md:flex items-center space-x-8" role="menubar">
+                    <a href="/" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne" role="menuitem">HOME</a>
+                    <a href="/shop" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne" role="menuitem">SHOP</a>
+                    <a href="/about" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne" role="menuitem">ABOUT</a>
+                    <a href="/hair-care" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne" role="menuitem">HAIR CARE</a>
+                    <a href="/contact" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne" role="menuitem">CONTACT</a>
+                    <a href="/faq" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne" role="menuitem">FAQ</a>
                 </div>
                 <div class="flex items-center space-x-6">
-                    <button onclick="openSearch()" class="text-cream/80 hover:text-champagne transition-colors"><i class="fas fa-search text-lg"></i></button>
-                    <a href="/cart" class="text-cream/80 hover:text-champagne transition-colors relative">
-                        <i class="fas fa-shopping-bag text-lg"></i>
-                        <span id="cart-count" class="absolute -top-2 -right-2 bg-champagne text-charcoal text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium hidden">0</span>
+                    <button type="button" onclick="openSearch()" class="text-cream/80 hover:text-champagne transition-colors" aria-label="Open search"><span class="fas fa-search text-lg" aria-hidden="true"></span></button>
+                    <a href="/cart" class="text-cream/80 hover:text-champagne transition-colors relative" aria-label="Shopping cart">
+                        <span class="fas fa-shopping-bag text-lg" aria-hidden="true"></span>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-champagne text-charcoal text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium hidden" aria-live="polite">0</span>
                     </a>
-                    <button onclick="toggleMobileMenu()" class="md:hidden text-cream/80 hover:text-champagne"><i class="fas fa-bars text-xl"></i></button>
+                    <button type="button" onclick="toggleMobileMenu()" class="md:hidden text-cream/80 hover:text-champagne" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-menu"><span class="fas fa-bars text-xl" aria-hidden="true"></span></button>
                 </div>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-gradient-to-b from-purple-dark/95 to-charcoal/95 border-t border-pink/20">
+        <div id="mobile-menu" class="hidden md:hidden bg-gradient-to-b from-purple-dark/95 to-charcoal/95 border-t border-pink/20" role="menu" aria-label="Mobile navigation">
             <div class="px-4 py-6 space-y-4">
-                <a href="/" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">HOME</a>
-                <a href="/shop" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">SHOP</a>
-                <a href="/about" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">ABOUT</a>
-                <a href="/hair-care" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">HAIR CARE</a>
-                <a href="/contact" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">CONTACT</a>
-                <a href="/faq" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2">FAQ</a>
+                <a href="/" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2" role="menuitem">HOME</a>
+                <a href="/shop" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2" role="menuitem">SHOP</a>
+                <a href="/about" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2" role="menuitem">ABOUT</a>
+                <a href="/hair-care" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2" role="menuitem">HAIR CARE</a>
+                <a href="/contact" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2" role="menuitem">CONTACT</a>
+                <a href="/faq" class="block text-sm tracking-wider text-cream/80 hover:text-champagne py-2" role="menuitem">FAQ</a>
             </div>
         </div>
-    </nav>
+      </nav>
+    </header>
     
     <!-- Search Modal -->
-    <div id="search-modal" class="hidden fixed inset-0 z-[60] bg-gradient-to-br from-purple-dark/95 via-charcoal/95 to-pink-dark/95 backdrop-blur-sm">
+    <div id="search-modal" class="hidden fixed inset-0 z-[60] bg-gradient-to-br from-purple-dark/95 via-charcoal/95 to-pink-dark/95 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Search products">
         <div class="max-w-3xl mx-auto px-4 pt-32">
             <div class="flex items-center justify-between mb-8">
-                <h2 class="font-serif text-3xl text-champagne">Search</h2>
-                <button onclick="closeSearch()" class="text-cream/60 hover:text-champagne"><i class="fas fa-times text-2xl"></i></button>
+                <h2 class="font-serif text-3xl text-champagne" id="search-title">Search</h2>
+                <button type="button" onclick="closeSearch()" class="text-cream/60 hover:text-champagne" aria-label="Close search"><span class="fas fa-times text-2xl" aria-hidden="true"></span></button>
             </div>
             <div class="relative">
-                <input type="text" id="search-input" placeholder="Search for wigs, bundles..." class="w-full bg-transparent border-b-2 border-pink/40 focus:border-champagne text-cream text-lg py-4 pr-12 placeholder-cream/40">
-                <i class="fas fa-search absolute right-0 top-1/2 -translate-y-1/2 text-pink/70"></i>
+                <label for="search-input" class="sr-only">Search for products</label>
+                <input type="search" id="search-input" placeholder="Search for wigs, bundles..." class="w-full bg-transparent border-b-2 border-pink/40 focus:border-champagne text-cream text-lg py-4 pr-12 placeholder-cream/40" aria-describedby="search-title">
+                <span class="fas fa-search absolute right-0 top-1/2 -translate-y-1/2 text-pink/70" aria-hidden="true"></span>
             </div>
-            <div id="search-results" class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+            <div id="search-results" class="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4" role="region" aria-live="polite" aria-label="Search results"></div>
         </div>
     </div>
     
-    <main class="flex-1 pt-20">${content}</main>
+    <main id="main-content" class="flex-1 pt-20" role="main">${content}</main>
     
     <!-- Footer -->
-    <footer class="bg-gradient-to-r from-purple-dark/80 via-charcoal to-pink-dark/80 border-t border-pink/20 mt-20">
+    <footer class="bg-gradient-to-r from-purple-dark/80 via-charcoal to-pink-dark/80 border-t border-pink/20 mt-20" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="md:col-span-1">
                     <div class="flex items-center space-x-3 mb-6">
-                      <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries Icon" class="h-16 w-auto">
-                      <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="h-12 w-auto">
+                      <img src="/static/images/logo-transparent.png" alt="" class="h-16 w-auto" width="64" height="64" loading="lazy">
+                      <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="h-12 w-auto" width="180" height="48" loading="lazy">
                     </div>
                     <p class="text-cream/60 text-sm leading-relaxed">From roots to tips, perfection never slips.<br>Premium hair that shows you care.</p>
-                    <div class="flex space-x-4 mt-6">
-                        <a href="#" class="text-cream/60 hover:text-champagne transition-colors"><i class="fab fa-instagram text-xl"></i></a>
-                        <a href="#" class="text-cream/60 hover:text-champagne transition-colors"><i class="fab fa-tiktok text-xl"></i></a>
-                        <a href="#" class="text-cream/60 hover:text-champagne transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                    <div class="flex space-x-4 mt-6" role="list" aria-label="Social media links">
+                        <a href="https://instagram.com/nimenluxuries" class="text-cream/60 hover:text-champagne transition-colors" aria-label="Follow us on Instagram" rel="noopener noreferrer" target="_blank"><span class="fab fa-instagram text-xl" aria-hidden="true"></span></a>
+                        <a href="https://tiktok.com/@nimenluxuries" class="text-cream/60 hover:text-champagne transition-colors" aria-label="Follow us on TikTok" rel="noopener noreferrer" target="_blank"><span class="fab fa-tiktok text-xl" aria-hidden="true"></span></a>
+                        <a href="https://facebook.com/nimenluxuries" class="text-cream/60 hover:text-champagne transition-colors" aria-label="Follow us on Facebook" rel="noopener noreferrer" target="_blank"><span class="fab fa-facebook text-xl" aria-hidden="true"></span></a>
                     </div>
                 </div>
-                <div>
+                <nav aria-label="Shop categories">
                     <h4 class="font-serif text-xl text-champagne mb-6">Shop</h4>
-                    <ul class="space-y-3">
+                    <ul class="space-y-3" role="list">
                         <li><a href="/shop?category=wigs" class="text-cream/60 hover:text-champagne text-sm transition-colors">Wigs</a></li>
                         <li><a href="/shop?category=bundles" class="text-cream/60 hover:text-champagne text-sm transition-colors">Bundles</a></li>
                         <li><a href="/shop?category=closures" class="text-cream/60 hover:text-champagne text-sm transition-colors">Closures</a></li>
                         <li><a href="/shop?category=frontals" class="text-cream/60 hover:text-champagne text-sm transition-colors">Frontals</a></li>
                     </ul>
-                </div>
-                <div>
+                </nav>
+                <nav aria-label="Customer support">
                     <h4 class="font-serif text-xl text-champagne mb-6">Customer Care</h4>
-                    <ul class="space-y-3">
+                    <ul class="space-y-3" role="list">
                         <li><a href="/contact" class="text-cream/60 hover:text-champagne text-sm transition-colors">Contact Us</a></li>
                         <li><a href="/faq" class="text-cream/60 hover:text-champagne text-sm transition-colors">FAQ</a></li>
                         <li><a href="/hair-care" class="text-cream/60 hover:text-champagne text-sm transition-colors">Hair Care Guide</a></li>
                     </ul>
-                </div>
+                </nav>
                 <div>
-                    <h4 class="font-serif text-xl text-champagne mb-6">Newsletter</h4>
+                    <h4 class="font-serif text-xl text-champagne mb-6" id="newsletter-heading">Newsletter</h4>
                     <p class="text-cream/60 text-sm mb-4">Subscribe for exclusive offers.</p>
-                    <form class="space-y-3">
-                        <input type="email" placeholder="Your email" class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream text-sm placeholder-cream/40">
+                    <form class="space-y-3" aria-labelledby="newsletter-heading" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+                        <label for="newsletter-email" class="sr-only">Email address</label>
+                        <input type="email" id="newsletter-email" name="email" placeholder="Your email" required autocomplete="email" class="w-full bg-charcoal border border-pink/40 rounded px-4 py-3 text-cream text-sm placeholder-cream/40">
                         <button type="submit" class="btn-primary w-full py-3 rounded text-sm font-medium tracking-wider">SUBSCRIBE</button>
                     </form>
                 </div>
             </div>
             <div class="border-t border-pink/20 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between">
                 <p class="text-cream/40 text-xs">© 2026 Nimen Luxuries. All rights reserved.</p>
-                <div class="flex items-center space-x-4 mt-4 md:mt-0">
-                    <i class="fab fa-cc-visa text-2xl text-cream/40"></i>
-                    <i class="fab fa-cc-mastercard text-2xl text-cream/40"></i>
-                    <i class="fab fa-cc-amex text-2xl text-cream/40"></i>
-                    <i class="fab fa-cc-paypal text-2xl text-cream/40"></i>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0" role="img" aria-label="We accept Visa, Mastercard, American Express, and PayPal">
+                    <span class="fab fa-cc-visa text-2xl text-cream/40" aria-hidden="true"></span>
+                    <span class="fab fa-cc-mastercard text-2xl text-cream/40" aria-hidden="true"></span>
+                    <span class="fab fa-cc-amex text-2xl text-cream/40" aria-hidden="true"></span>
+                    <span class="fab fa-cc-paypal text-2xl text-cream/40" aria-hidden="true"></span>
                 </div>
             </div>
         </div>
@@ -888,7 +1060,7 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
         const res = await fetch('/api/products?search=' + encodeURIComponent(query));
         const data = await res.json();
         document.getElementById('search-results').innerHTML = data.products.slice(0, 6).map(p => 
-          '<a href="/product/' + p.id + '" class="block bg-charcoal rounded-lg overflow-hidden hover:ring-1 ring-pink/40"><img src="' + p.image + '" alt="' + p.name + '" class="w-full aspect-[3/4] object-cover"><div class="p-3"><h4 class="text-cream text-sm truncate">' + p.name + '</h4><p class="text-champagne font-medium">$' + p.price + '</p></div></a>'
+          '<a href="/product/' + p.id + '" class="block bg-charcoal rounded-lg overflow-hidden hover:ring-1 ring-pink/40"><img src="' + p.image + '" alt="' + p.name + '" class="w-full aspect-[3/4] object-cover" loading="lazy" width="300" height="400" decoding="async"><div class="p-3"><h4 class="text-cream text-sm truncate">' + p.name + '</h4><p class="text-champagne font-medium">$' + p.price + '</p></div></a>'
         ).join('');
       });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSearch(); });
@@ -908,7 +1080,7 @@ app.get('/', (c) => {
     <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
       <div class="absolute inset-0">
         <div class="absolute inset-0 bg-gradient-to-b from-purple-dark/80 via-charcoal/60 to-pink-dark/40 z-10"></div>
-        <img src="/static/images/HddFOqAy.jpg" alt="Luxury Hair" class="w-full h-full object-cover object-top">
+        <img src="/static/images/HddFOqAy.jpg" alt="Model with luxury human hair wig showcasing premium quality" class="w-full h-full object-cover object-top" width="1200" height="800" loading="eager" fetchpriority="high">
       </div>
       <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
         <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-cream mb-6 animate-fade-in">
@@ -936,7 +1108,7 @@ app.get('/', (c) => {
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           <a href="/shop?category=wigs" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="/static/images/72KVO0fo.jpg" alt="Wigs" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/72KVO0fo.jpg" alt="Collection of premium human hair wigs" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" width="400" height="533" decoding="async">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Wigs</h3>
@@ -944,7 +1116,7 @@ app.get('/', (c) => {
             </div>
           </a>
           <a href="/shop?category=bundles" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="/static/images/dtp8tOCk.jpg" alt="Bundles" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/dtp8tOCk.jpg" alt="Premium raw hair bundles collection" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" width="400" height="533" decoding="async">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Bundles</h3>
@@ -952,7 +1124,7 @@ app.get('/', (c) => {
             </div>
           </a>
           <a href="/shop?category=closures" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="/static/images/0zL8uSrk.jpg" alt="Closures" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/0zL8uSrk.jpg" alt="HD lace closures for natural look" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" width="400" height="533" decoding="async">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Closures</h3>
@@ -960,7 +1132,7 @@ app.get('/', (c) => {
             </div>
           </a>
           <a href="/shop?category=frontals" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="/static/images/m1r8JzfT.jpg" alt="Frontals" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/m1r8JzfT.jpg" alt="Lace frontals for seamless hairline" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" width="400" height="533" decoding="async">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Frontals</h3>
@@ -1094,12 +1266,12 @@ app.get('/', (c) => {
           <p class="text-cream/60">Follow us for styling inspiration</p>
         </div>
         <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
-          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/1bep1ySR.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/hgPmTYKi.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/s3thTl7P.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/72KVO0fo.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/sENTKw6g.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/71fkn8Bu.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
+          <a href="https://instagram.com/nimenluxuries" class="aspect-square overflow-hidden group" aria-label="View on Instagram" rel="noopener noreferrer" target="_blank"><img src="/static/images/1bep1ySR.jpg" alt="Curly brown wig Instagram post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" width="200" height="200" decoding="async"></a>
+          <a href="https://instagram.com/nimenluxuries" class="aspect-square overflow-hidden group" aria-label="View on Instagram" rel="noopener noreferrer" target="_blank"><img src="/static/images/hgPmTYKi.jpg" alt="Bouncy curly bob Instagram post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" width="200" height="200" decoding="async"></a>
+          <a href="https://instagram.com/nimenluxuries" class="aspect-square overflow-hidden group" aria-label="View on Instagram" rel="noopener noreferrer" target="_blank"><img src="/static/images/s3thTl7P.jpg" alt="Highlighted body wave Instagram post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" width="200" height="200" decoding="async"></a>
+          <a href="https://instagram.com/nimenluxuries" class="aspect-square overflow-hidden group" aria-label="View on Instagram" rel="noopener noreferrer" target="_blank"><img src="/static/images/72KVO0fo.jpg" alt="Premium wig collection Instagram post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" width="200" height="200" decoding="async"></a>
+          <a href="https://instagram.com/nimenluxuries" class="aspect-square overflow-hidden group" aria-label="View on Instagram" rel="noopener noreferrer" target="_blank"><img src="/static/images/sENTKw6g.jpg" alt="Straight hair bundle Instagram post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" width="200" height="200" decoding="async"></a>
+          <a href="https://instagram.com/nimenluxuries" class="aspect-square overflow-hidden group" aria-label="View on Instagram" rel="noopener noreferrer" target="_blank"><img src="/static/images/71fkn8Bu.jpg" alt="Deep wave wig Instagram post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" width="200" height="200" decoding="async"></a>
         </div>
       </div>
     </section>
@@ -1177,7 +1349,7 @@ app.get('/shop', (c) => {
         document.getElementById('products-grid').innerHTML = filtered.map(p => {
           const saleTag = p.originalPrice > p.price ? '<div class="absolute top-3 left-3 bg-rose-gold text-cream text-xs px-2 py-1 rounded">SALE</div>' : '';
           const origPrice = p.originalPrice > p.price ? '<span class="text-cream/40 text-sm line-through">$' + p.originalPrice + '</span>' : '';
-          return '<a href="/product/' + p.id + '" class="product-card group"><div class="relative aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 mb-4"><img src="' + p.image + '" alt="' + p.name + '" class="w-full h-full object-cover">' + saleTag + '<div class="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="btn-primary px-6 py-2 rounded text-xs font-medium tracking-wider">QUICK VIEW</span></div></div><h3 class="text-cream font-medium text-sm mb-1 group-hover:text-champagne transition-colors">' + p.name + '</h3><div class="flex items-center gap-2"><span class="text-champagne font-serif text-lg">$' + p.price + '</span>' + origPrice + '</div><div class="flex items-center gap-1 mt-2"><div class="flex text-champagne text-xs">★★★★★</div><span class="text-cream/40 text-xs">(' + p.reviews + ')</span></div></a>';
+          return '<a href="/product/' + p.id + '" class="product-card group"><div class="relative aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30 mb-4"><img src="' + p.image + '" alt="' + p.name + '" class="w-full h-full object-cover" loading="lazy" width="300" height="400" decoding="async">' + saleTag + '<div class="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><span class="btn-primary px-6 py-2 rounded text-xs font-medium tracking-wider">QUICK VIEW</span></div></div><h3 class="text-cream font-medium text-sm mb-1 group-hover:text-champagne transition-colors">' + p.name + '</h3><div class="flex items-center gap-2"><span class="text-champagne font-serif text-lg">$' + p.price + '</span>' + origPrice + '</div><div class="flex items-center gap-1 mt-2"><div class="flex text-champagne text-xs">★★★★★</div><span class="text-cream/40 text-xs">(' + p.reviews + ')</span></div></a>';
         }).join('');
       }
       
@@ -1231,7 +1403,7 @@ app.get('/product/:id', (c) => {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div class="space-y-4">
             <div class="aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-purple-dark/30 via-charcoal/50 to-pink-dark/30">
-              <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+              <img src="${product.image}" alt="${product.name} - Premium human hair product" class="w-full h-full object-cover" width="600" height="800" loading="eager" fetchpriority="high">
             </div>
           </div>
           
@@ -1342,8 +1514,8 @@ app.get('/about', (c) => {
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div class="flex flex-col items-center space-y-4">
-            <img src="/static/images/logo-transparent.png" alt="Nimen Luxuries Icon" class="w-32 h-auto">
-            <img src="/static/images/logo-3d.png" alt="Nimen Luxuries" class="w-full max-w-sm mx-auto">
+            <img src="/static/images/logo-transparent.png" alt="" class="w-32 h-auto" width="128" height="128" loading="lazy" decoding="async">
+            <img src="/static/images/logo-3d.png" alt="Nimen Luxuries brand logo" class="w-full max-w-sm mx-auto" width="384" height="128" loading="lazy" decoding="async">
           </div>
           <div>
             <h2 class="font-serif text-3xl md:text-4xl text-champagne mb-6">The Beginning</h2>
