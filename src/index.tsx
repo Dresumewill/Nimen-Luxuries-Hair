@@ -30,7 +30,7 @@ const products: Product[] = [
     color: 'Brown',
     price: 289,
     originalPrice: 350,
-    image: 'https://www.genspark.ai/api/files/s/1bep1ySR',
+    image: '/static/images/1bep1ySR.jpg',
     description: 'Deep brown curly lace front wig with natural hairline. Premium 100% human hair.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"', '24"', '26"', '28"'],
     densities: ['130%', '150%', '180%', '200%'],
@@ -46,7 +46,7 @@ const products: Product[] = [
     color: 'Ombré Black/Brown',
     price: 329,
     originalPrice: 420,
-    image: 'https://www.genspark.ai/api/files/s/aLrRVkvZ',
+    image: '/static/images/aLrRVkvZ.jpg',
     description: 'Stunning ombré body wave with dark roots fading to chocolate brown.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"', '24"', '26"', '28"'],
     densities: ['130%', '150%', '180%', '200%'],
@@ -62,7 +62,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 399,
     originalPrice: 480,
-    image: 'https://www.genspark.ai/api/files/s/FDwIdagT',
+    image: '/static/images/FDwIdagT.jpg',
     description: 'Ultra-long body wave wig with incredible volume. Perfect for special occasions.',
     lengths: ['20"', '22"', '24"', '26"', '28"', '30"', '32"'],
     densities: ['150%', '180%', '200%', '250%'],
@@ -78,7 +78,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 249,
     originalPrice: 299,
-    image: 'https://www.genspark.ai/api/files/s/hgPmTYKi',
+    image: '/static/images/hgPmTYKi.jpg',
     description: 'Gorgeous bouncy curly bob with bangs. Fun, flirty, and fabulous.',
     lengths: ['10"', '12"', '14"'],
     densities: ['150%', '180%', '200%'],
@@ -94,7 +94,7 @@ const products: Product[] = [
     color: 'Brown',
     price: 189,
     originalPrice: 230,
-    image: 'https://www.genspark.ai/api/files/s/dtp8tOCk',
+    image: '/static/images/dtp8tOCk.jpg',
     description: 'Premium raw Vietnamese straight hair bundles with closure.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['Standard'],
@@ -110,7 +110,7 @@ const products: Product[] = [
     color: 'Highlight Brown/Blonde',
     price: 229,
     originalPrice: 280,
-    image: 'https://www.genspark.ai/api/files/s/NAUxzYT0',
+    image: '/static/images/NAUxzYT0.jpg',
     description: 'Beautiful highlighted bouncy bundles with frontal.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"'],
     densities: ['Standard'],
@@ -126,7 +126,7 @@ const products: Product[] = [
     color: 'Highlight Brown/Blonde',
     price: 359,
     originalPrice: 430,
-    image: 'https://www.genspark.ai/api/files/s/s3thTl7P',
+    image: '/static/images/s3thTl7P.jpg',
     description: 'Glamorous highlighted body wave with dimensional color.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"', '26"'],
     densities: ['150%', '180%', '200%'],
@@ -142,7 +142,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 319,
     originalPrice: 389,
-    image: 'https://www.genspark.ai/api/files/s/eSF8KsnG',
+    image: '/static/images/eSF8KsnG.jpg',
     description: 'Luxurious deep wave pattern. Available 12-28 inches.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"', '24"', '26"', '28"'],
     densities: ['130%', '150%', '180%', '200%'],
@@ -158,7 +158,7 @@ const products: Product[] = [
     color: 'Auburn',
     price: 299,
     originalPrice: 360,
-    image: 'https://www.genspark.ai/api/files/s/RBGHG7xs',
+    image: '/static/images/RBGHG7xs.jpg',
     description: 'Rich auburn curly wig with gorgeous copper tones.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['150%', '180%', '200%'],
@@ -174,7 +174,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 169,
     originalPrice: 210,
-    image: 'https://www.genspark.ai/api/files/s/3sdVXCeW',
+    image: '/static/images/3sdVXCeW.jpg',
     description: 'Raw deep wave bundles with frontal. Premium Vietnamese hair.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"', '24"', '26"'],
     densities: ['Standard'],
@@ -190,7 +190,7 @@ const products: Product[] = [
     color: 'Grey',
     price: 269,
     originalPrice: 320,
-    image: 'https://www.genspark.ai/api/files/s/ImNzHQdO',
+    image: '/static/images/ImNzHQdO.jpg',
     description: 'Chic 5x5 grey color bob wig. Bold, modern, and sophisticated.',
     lengths: ['10"', '12"', '14"'],
     densities: ['150%', '180%'],
@@ -206,7 +206,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 259,
     originalPrice: 310,
-    image: 'https://www.genspark.ai/api/files/s/R6hnhNpZ',
+    image: '/static/images/R6hnhNpZ.jpg',
     description: 'Adorable curly wig with natural bangs.',
     lengths: ['12"', '14"', '16"', '18"'],
     densities: ['150%', '180%'],
@@ -222,7 +222,7 @@ const products: Product[] = [
     color: 'Silver Grey',
     price: 339,
     originalPrice: 410,
-    image: 'https://www.genspark.ai/api/files/s/2SF9zfac',
+    image: '/static/images/2SF9zfac.jpg',
     description: 'Stunning silver grey body wave. Elegant and fashion-forward.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['150%', '180%', '200%'],
@@ -238,7 +238,7 @@ const products: Product[] = [
     color: 'Burgundy',
     price: 329,
     originalPrice: 399,
-    image: 'https://www.genspark.ai/api/files/s/72KVO0fo',
+    image: '/static/images/72KVO0fo.jpg',
     description: 'Rich burgundy body wave with deep wine tones.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"', '26"'],
     densities: ['150%', '180%', '200%'],
@@ -254,7 +254,7 @@ const products: Product[] = [
     color: 'Ginger',
     price: 319,
     originalPrice: 380,
-    image: 'https://www.genspark.ai/api/files/s/sENTKw6g',
+    image: '/static/images/sENTKw6g.jpg',
     description: 'Vibrant ginger body wave wig. Warm, fiery, and stunning.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"', '26"'],
     densities: ['150%', '180%', '200%'],
@@ -270,7 +270,7 @@ const products: Product[] = [
     color: 'Purple',
     price: 309,
     originalPrice: 370,
-    image: 'https://www.genspark.ai/api/files/s/ZP4M8g5K',
+    image: '/static/images/ZP4M8g5K.jpg',
     description: 'Deep plum purple body wave. Mysterious and alluring.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['150%', '180%', '200%'],
@@ -286,7 +286,7 @@ const products: Product[] = [
     color: 'Silver Grey',
     price: 199,
     originalPrice: 240,
-    image: 'https://www.genspark.ai/api/files/s/yhbw7G2p',
+    image: '/static/images/yhbw7G2p.jpg',
     description: 'Elegant silver pixie cut wig. Short, chic, and sophisticated.',
     lengths: ['6"', '8"'],
     densities: ['150%', '180%'],
@@ -302,7 +302,7 @@ const products: Product[] = [
     color: 'Dark Brown',
     price: 379,
     originalPrice: 450,
-    image: 'https://www.genspark.ai/api/files/s/HddFOqAy',
+    image: '/static/images/HddFOqAy.jpg',
     description: 'Premium raw Vietnamese bouncy hair. Voluminous and glamorous.',
     lengths: ['16"', '18"', '20"', '22"', '24"', '26"', '28"'],
     densities: ['180%', '200%', '250%'],
@@ -318,7 +318,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 289,
     originalPrice: 350,
-    image: 'https://www.genspark.ai/api/files/s/5KndcSLd',
+    image: '/static/images/5KndcSLd.jpg',
     description: 'Classic natural black body wave. Timeless elegance.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"', '26"', '28"', '30"'],
     densities: ['130%', '150%', '180%', '200%'],
@@ -334,7 +334,7 @@ const products: Product[] = [
     color: 'Honey Highlight',
     price: 339,
     originalPrice: 410,
-    image: 'https://www.genspark.ai/api/files/s/q8lStKao',
+    image: '/static/images/q8lStKao.jpg',
     description: 'Gorgeous honey highlighted curls. Dimensional and sun-kissed.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['150%', '180%', '200%'],
@@ -350,7 +350,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 149,
     originalPrice: 180,
-    image: 'https://www.genspark.ai/api/files/s/0zL8uSrk',
+    image: '/static/images/0zL8uSrk.jpg',
     description: 'Premium deep wave bundles with 4x4 lace closure.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"'],
     densities: ['Standard'],
@@ -366,7 +366,7 @@ const products: Product[] = [
     color: 'Burgundy',
     price: 299,
     originalPrice: 360,
-    image: 'https://www.genspark.ai/api/files/s/Pjc9mClO',
+    image: '/static/images/Pjc9mClO.jpg',
     description: 'Deep burgundy curly wig. Rich wine color.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['150%', '180%', '200%'],
@@ -382,7 +382,7 @@ const products: Product[] = [
     color: 'Chocolate Brown',
     price: 279,
     originalPrice: 340,
-    image: 'https://www.genspark.ai/api/files/s/rDq0PXPl',
+    image: '/static/images/rDq0PXPl.jpg',
     description: 'Delicious chocolate brown curly wig. Natural and beautiful.',
     lengths: ['12"', '14"', '16"', '18"', '20"'],
     densities: ['150%', '180%'],
@@ -398,7 +398,7 @@ const products: Product[] = [
     color: 'Ombré Brown',
     price: 259,
     originalPrice: 310,
-    image: 'https://www.genspark.ai/api/files/s/4IQAs4mu',
+    image: '/static/images/4IQAs4mu.jpg',
     description: 'Stylish ombré bouncy bob. Short, sassy, and sophisticated.',
     lengths: ['10"', '12"', '14"'],
     densities: ['150%', '180%'],
@@ -414,7 +414,7 @@ const products: Product[] = [
     color: 'Burgundy',
     price: 239,
     originalPrice: 290,
-    image: 'https://www.genspark.ai/api/files/s/c95uDjnc',
+    image: '/static/images/c95uDjnc.jpg',
     description: 'Bold burgundy afro curly wig. Voluminous and expressive.',
     lengths: ['12"', '14"', '16"'],
     densities: ['180%', '200%'],
@@ -430,7 +430,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 329,
     originalPrice: 399,
-    image: 'https://www.genspark.ai/api/files/s/LNnRl3Hs',
+    image: '/static/images/LNnRl3Hs.jpg',
     description: 'Luxurious long jerry curl wig. Defined curls.',
     lengths: ['18"', '20"', '22"', '24"', '26"', '28"', '30"'],
     densities: ['150%', '180%', '200%'],
@@ -446,7 +446,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 179,
     originalPrice: 220,
-    image: 'https://www.genspark.ai/api/files/s/m1r8JzfT',
+    image: '/static/images/m1r8JzfT.jpg',
     description: 'Classic body wave bundles with 13x4 lace frontal.',
     lengths: ['12"', '14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['Standard'],
@@ -462,7 +462,7 @@ const products: Product[] = [
     color: 'Orange',
     price: 249,
     originalPrice: 299,
-    image: 'https://www.genspark.ai/api/files/s/UPUBE2hq',
+    image: '/static/images/UPUBE2hq.jpg',
     description: 'Bold and vibrant orange bob wig.',
     lengths: ['10"', '12"', '14"'],
     densities: ['150%', '180%'],
@@ -478,7 +478,7 @@ const products: Product[] = [
     color: 'Caramel Ombré',
     price: 319,
     originalPrice: 380,
-    image: 'https://www.genspark.ai/api/files/s/71fkn8Bu',
+    image: '/static/images/71fkn8Bu.jpg',
     description: 'Gorgeous caramel ombré bouncy wig. Warm and inviting.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"'],
     densities: ['150%', '180%', '200%'],
@@ -494,7 +494,7 @@ const products: Product[] = [
     color: 'Burgundy',
     price: 289,
     originalPrice: 350,
-    image: 'https://www.genspark.ai/api/files/s/xPDlgaIN',
+    image: '/static/images/xPDlgaIN.jpg',
     description: 'Sleek burgundy straight wig. Silky, shiny.',
     lengths: ['14"', '16"', '18"', '20"', '22"', '24"', '26"', '28"'],
     densities: ['130%', '150%', '180%'],
@@ -510,7 +510,7 @@ const products: Product[] = [
     color: 'Chocolate Brown',
     price: 229,
     originalPrice: 280,
-    image: 'https://www.genspark.ai/api/files/s/2y8qyXBz',
+    image: '/static/images/2y8qyXBz.jpg',
     description: 'Classic chocolate brown straight bob.',
     lengths: ['10"', '12"', '14"'],
     densities: ['150%', '180%'],
@@ -526,7 +526,7 @@ const products: Product[] = [
     color: 'Ombré Copper',
     price: 309,
     originalPrice: 370,
-    image: 'https://www.genspark.ai/api/files/s/7rzL2WIq',
+    image: '/static/images/7rzL2WIq.jpg',
     description: 'Beautiful ombré copper bouncy wig.',
     lengths: ['12"', '14"', '16"', '18"'],
     densities: ['150%', '180%'],
@@ -542,7 +542,7 @@ const products: Product[] = [
     color: 'Auburn',
     price: 279,
     originalPrice: 340,
-    image: 'https://www.genspark.ai/api/files/s/jtaW8WaY',
+    image: '/static/images/jtaW8WaY.jpg',
     description: 'Retro-inspired auburn wave bob. Old Hollywood glamour.',
     lengths: ['10"', '12"', '14"'],
     densities: ['150%', '180%'],
@@ -558,7 +558,7 @@ const products: Product[] = [
     color: 'Natural Black',
     price: 309,
     originalPrice: 370,
-    image: 'https://www.genspark.ai/api/files/s/NosQuE2Q',
+    image: '/static/images/NosQuE2Q.jpg',
     description: 'Classic jerry curl with perfect definition.',
     lengths: ['16"', '18"', '20"', '22"', '24"', '26"', '28"', '30"'],
     densities: ['150%', '180%', '200%'],
@@ -574,7 +574,7 @@ const products: Product[] = [
     color: 'Brown',
     price: 219,
     originalPrice: 260,
-    image: 'https://www.genspark.ai/api/files/s/4JCE7Cwu',
+    image: '/static/images/4JCE7Cwu.jpg',
     description: 'Perfectly sleek brown bob. Professional and polished.',
     lengths: ['10"', '12"', '14"'],
     densities: ['150%', '180%'],
@@ -590,7 +590,7 @@ const products: Product[] = [
     color: 'Ombré Auburn',
     price: 329,
     originalPrice: 399,
-    image: 'https://www.genspark.ai/api/files/s/GkSbIFNo',
+    image: '/static/images/GkSbIFNo.jpg',
     description: 'Stunning ombré auburn body wave.',
     lengths: ['14"', '16"', '18"', '20"', '22"'],
     densities: ['150%', '180%', '200%'],
@@ -606,7 +606,7 @@ const products: Product[] = [
     color: 'Honey Blonde',
     price: 269,
     originalPrice: 320,
-    image: 'https://www.genspark.ai/api/files/s/bhov5AOQ',
+    image: '/static/images/bhov5AOQ.jpg',
     description: 'Sweet honey blonde curly bob. Fun and flirty.',
     lengths: ['10"', '12"', '14"', '16"'],
     densities: ['150%', '180%'],
@@ -738,7 +738,7 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <a href="/" class="flex items-center space-x-3">
-                    <img src="https://www.genspark.ai/api/files/s/3NbFbXXP" alt="Nimen Luxuries" class="h-14 w-auto">
+                    <img src="/static/images/3NbFbXXP.png" alt="Nimen Luxuries" class="h-14 w-auto">
                 </a>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="/" class="nav-link text-sm tracking-wider text-cream/80 hover:text-champagne">HOME</a>
@@ -792,7 +792,7 @@ const baseLayout = (title: string, content: string, scripts: string = '') => `
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="md:col-span-1">
-                    <img src="https://www.genspark.ai/api/files/s/3NbFbXXP" alt="Nimen Luxuries" class="h-20 w-auto mb-6">
+                    <img src="/static/images/3NbFbXXP.png" alt="Nimen Luxuries" class="h-20 w-auto mb-6">
                     <p class="text-cream/60 text-sm leading-relaxed">Premium human hair and accessories for women who value quality and beauty.</p>
                     <div class="flex space-x-4 mt-6">
                         <a href="#" class="text-cream/60 hover:text-champagne transition-colors"><i class="fab fa-instagram text-xl"></i></a>
@@ -897,7 +897,7 @@ app.get('/', (c) => {
     <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
       <div class="absolute inset-0">
         <div class="absolute inset-0 bg-gradient-to-b from-charcoal/80 via-charcoal/60 to-charcoal z-10"></div>
-        <img src="https://www.genspark.ai/api/files/s/HddFOqAy" alt="Luxury Hair" class="w-full h-full object-cover object-top">
+        <img src="/static/images/HddFOqAy.jpg" alt="Luxury Hair" class="w-full h-full object-cover object-top">
       </div>
       <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
         <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-cream mb-6 animate-fade-in">
@@ -925,7 +925,7 @@ app.get('/', (c) => {
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           <a href="/shop?category=wigs" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="https://www.genspark.ai/api/files/s/72KVO0fo" alt="Wigs" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/72KVO0fo.jpg" alt="Wigs" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Wigs</h3>
@@ -933,7 +933,7 @@ app.get('/', (c) => {
             </div>
           </a>
           <a href="/shop?category=bundles" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="https://www.genspark.ai/api/files/s/dtp8tOCk" alt="Bundles" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/dtp8tOCk.jpg" alt="Bundles" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Bundles</h3>
@@ -941,7 +941,7 @@ app.get('/', (c) => {
             </div>
           </a>
           <a href="/shop?category=closures" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="https://www.genspark.ai/api/files/s/0zL8uSrk" alt="Closures" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/0zL8uSrk.jpg" alt="Closures" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Closures</h3>
@@ -949,7 +949,7 @@ app.get('/', (c) => {
             </div>
           </a>
           <a href="/shop?category=frontals" class="group relative aspect-[3/4] overflow-hidden rounded-lg">
-            <img src="https://www.genspark.ai/api/files/s/m1r8JzfT" alt="Frontals" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <img src="/static/images/m1r8JzfT.jpg" alt="Frontals" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <div class="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent"></div>
             <div class="absolute bottom-6 left-6 right-6">
               <h3 class="font-serif text-2xl md:text-3xl text-cream mb-1">Frontals</h3>
@@ -1014,16 +1014,16 @@ app.get('/', (c) => {
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="https://www.genspark.ai/api/files/s/d4JfSTBJ" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/d4JfSTBJ.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="https://www.genspark.ai/api/files/s/wM5isRYU" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/wM5isRYU.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="https://www.genspark.ai/api/files/s/mreAEmd7" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/mreAEmd7.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="https://www.genspark.ai/api/files/s/F8KK7Hmk" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/F8KK7Hmk.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
         </div>
       </div>
@@ -1083,12 +1083,12 @@ app.get('/', (c) => {
           <p class="text-cream/60">Follow us for styling inspiration</p>
         </div>
         <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
-          <a href="#" class="aspect-square overflow-hidden group"><img src="https://www.genspark.ai/api/files/s/1bep1ySR" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="https://www.genspark.ai/api/files/s/hgPmTYKi" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="https://www.genspark.ai/api/files/s/s3thTl7P" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="https://www.genspark.ai/api/files/s/72KVO0fo" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="https://www.genspark.ai/api/files/s/sENTKw6g" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
-          <a href="#" class="aspect-square overflow-hidden group"><img src="https://www.genspark.ai/api/files/s/71fkn8Bu" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
+          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/1bep1ySR.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
+          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/hgPmTYKi.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
+          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/s3thTl7P.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
+          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/72KVO0fo.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
+          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/sENTKw6g.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
+          <a href="#" class="aspect-square overflow-hidden group"><img src="/static/images/71fkn8Bu.jpg" alt="Instagram" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"></a>
         </div>
       </div>
     </section>
@@ -1330,7 +1330,7 @@ app.get('/about', (c) => {
     <section class="py-20 px-4">
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div><img src="https://www.genspark.ai/api/files/s/3NbFbXXP" alt="Nimen Luxuries" class="w-full max-w-md mx-auto"></div>
+          <div><img src="/static/images/3NbFbXXP.png" alt="Nimen Luxuries" class="w-full max-w-md mx-auto"></div>
           <div>
             <h2 class="font-serif text-3xl md:text-4xl text-champagne mb-6">The Beginning</h2>
             <p class="text-cream/70 leading-relaxed mb-6">Nimen Luxuries was born from a simple belief: every woman deserves access to premium quality hair that makes her feel confident, beautiful, and unstoppable.</p>
