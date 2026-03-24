@@ -2,6 +2,11 @@ import { Hono } from 'hono'
 import { serveStatic } from 'hono/cloudflare-pages'
 import { cors } from 'hono/cors'
 
+type Bindings = {
+  STRIPE_PUBLISHABLE_KEY: string
+  STRIPE_SECRET_KEY: string
+}
+
 // Product interface
 interface Product {
   id: string
@@ -616,10 +621,10 @@ const products: Product[] = [
   }
 ]
 
-const app = new Hono()
+const app = new Hono<{ Bindings: Bindings }>()
 
 app.use('*', cors())
-app.use('/static/*', serveStatic({ root: './public' }))
+app.use('/static/*', serveStatic())
 
 // Serve SEO files from root
 app.get('/robots.txt', (c) => {
@@ -678,20 +683,13 @@ app.get('/sitemap.xml', (c) => {
 </urlset>`)
 })
 
-// Stripe Configuration
-// IMPORTANT: Replace these with your actual Stripe keys
-// For testing, use test keys (pk_test_... and sk_test_...)
-// For production, use live keys (pk_live_... and sk_live_...)
-const STRIPE_PUBLISHABLE_KEY = 'pk_test_51ABC123XYZ' // Replace with your publishable key
-const STRIPE_SECRET_KEY = 'sk_test_51ABC123XYZ' // Replace with your secret key - store securely!
-
 // Stripe API endpoint
 const STRIPE_API = 'https://api.stripe.com/v1'
 
 // Helper function to make Stripe API calls
-async function stripeRequest(endpoint: string, method: string, body?: Record<string, string>) {
+async function stripeRequest(secretKey: string, endpoint: string, method: string, body?: Record<string, string>) {
   const headers: Record<string, string> = {
-    'Authorization': `Bearer ${STRIPE_SECRET_KEY}`,
+    'Authorization': `Bearer ${secretKey}`,
     'Content-Type': 'application/x-www-form-urlencoded',
   }
   
@@ -717,7 +715,7 @@ app.post('/api/create-payment-intent', async (c) => {
       return c.json({ error: 'Invalid amount' }, 400)
     }
     
-    const paymentIntent = await stripeRequest('/payment_intents', 'POST', {
+    const paymentIntent = await stripeRequest(c.env.STRIPE_SECRET_KEY, '/payment_intents', 'POST', {
       amount: String(Math.round(amount)), // Amount in cents
       currency,
       'automatic_payment_methods[enabled]': 'true',
@@ -747,7 +745,7 @@ app.post('/api/webhook', async (c) => {
     const event = JSON.parse(payload)
     
     switch (event.type) {
-      case 'payment_intent.succeeded':
+      case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object
         console.log('Payment succeeded:', paymentIntent.id)
         // Here you would:
@@ -755,6 +753,7 @@ app.post('/api/webhook', async (c) => {
         // 2. Send confirmation email
         // 3. Update inventory
         break
+      }
       case 'payment_intent.payment_failed':
         console.log('Payment failed:', event.data.object.id)
         break
@@ -769,7 +768,7 @@ app.post('/api/webhook', async (c) => {
 
 // Get Stripe publishable key (for frontend)
 app.get('/api/stripe-config', (c) => {
-  return c.json({ publishableKey: STRIPE_PUBLISHABLE_KEY })
+  return c.json({ publishableKey: c.env.STRIPE_PUBLISHABLE_KEY || '' })
 })
 
 // API Routes
@@ -1291,16 +1290,16 @@ app.get('/', (c) => {
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="/static/images/d4JfSTBJ.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/nimen2.mp4" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="/static/images/wM5isRYU.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/Nimen3.mp4" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="/static/images/mreAEmd7.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/nimen%20v1.mp4" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
           <div class="aspect-[9/16] rounded-lg overflow-hidden bg-charcoal">
-            <video src="/static/images/F8KK7Hmk.jpg" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+            <video src="/static/images/Nimen%20V3.mp4" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
           </div>
         </div>
       </div>
