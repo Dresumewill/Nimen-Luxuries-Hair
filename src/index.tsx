@@ -1747,7 +1747,7 @@ app.get('/contact', (c) => {
               </div>
               <div class="flex gap-4">
                 <div class="w-12 h-12 rounded-full gold-gradient flex items-center justify-center flex-shrink-0"><i class="fab fa-whatsapp text-charcoal text-xl"></i></div>
-                <div><h3 class="text-cream font-medium mb-1">WhatsApp</h3><p class="text-cream/70">+234 816 486-9536</p></div>
+                <div><h3 class="text-cream font-medium mb-1">WhatsApp</h3><a href="https://wa.me/2348164869536" class="text-cream/70 hover:text-champagne transition-colors" target="_blank" rel="noopener noreferrer">+234 816 486 9536</a></div>
               </div>
               <div class="flex gap-4">
                 <div class="w-12 h-12 rounded-full gold-gradient flex items-center justify-center flex-shrink-0"><i class="fab fa-instagram text-charcoal text-xl"></i></div>
